@@ -11,6 +11,7 @@ interface Props {
 export default function ResultsTable({ results }: Props) {
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
   const [copied, setCopied] = useState(false);
+  const [exported, setExported] = useState(false);
 
   const toggleExpand = (index: number) => {
     const newExpanded = new Set(expanded);
@@ -31,6 +32,75 @@ export default function ResultsTable({ results }: Props) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const exportResults = async () => {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+    const folderName = `checkapis_${timestamp}`;
+
+    const jsonData = {
+      exported: new Date().toISOString(),
+      summary: {
+        total: results.length,
+        valid: results.filter(r => r.status === 'valid').length,
+        invalid: results.filter(r => r.status === 'invalid').length,
+        providers: Array.from(new Set(results.map(r => r.provider))),
+      },
+      results: results.map(r => ({
+        key: r.truncatedKey,
+        provider: r.provider,
+        status: r.status,
+        valid: r.status === 'valid',
+        models: r.metadata?.models || [],
+        modelCount: r.metadata?.modelCount,
+        latency: r.latencyMs,
+        error: r.errorMessage,
+        metadata: r.metadata,
+      })),
+    };
+
+    const validCount = results.filter(r => r.status === 'valid').length;
+    const avgLatency = Math.round(results.filter(r => r.latencyMs).reduce((sum, r) => sum + (r.latencyMs || 0), 0) / results.filter(r => r.latencyMs).length) || 0;
+    
+    let markdown = `# CheckAPIs Results\n\n**Exported:** ${new Date().toISOString()}\n\n## Summary\n\n`;
+    markdown += `- **Total Keys:** ${results.length}\n- **Valid:** ${validCount} (${Math.round(validCount/results.length*100)}%)\n`;
+    markdown += `- **Invalid:** ${results.length - validCount}\n- **Providers:** ${Array.from(new Set(results.map(r => r.provider))).join(', ')}\n`;
+    markdown += `- **Average Latency:** ${avgLatency}ms\n\n## Results\n\n`;
+    
+    results.forEach((r, i) => {
+      markdown += `### ${i + 1}. ${r.truncatedKey}\n\n- **Provider:** ${r.provider}\n- **Status:** ${r.status === 'valid' ? '✓ Valid' : '✗ Invalid'}\n`;
+      if (r.metadata?.modelCount) markdown += `- **Models:** ${r.metadata.modelCount}\n`;
+      if (r.latencyMs) markdown += `- **Latency:** ${r.latencyMs}ms\n`;
+      if (r.errorMessage) markdown += `- **Error:** ${r.errorMessage}\n`;
+      if (r.metadata?.models && r.metadata.models.length > 0) {
+        markdown += `\n**Available Models:**\n\n`;
+        r.metadata.models.slice(0, 10).forEach((m: string) => { markdown += `- ${m}\n`; });
+        if (r.metadata.models.length > 10) markdown += `- ... and ${r.metadata.models.length - 10} more\n`;
+      }
+      markdown += `\n`;
+    });
+
+    const jsonBlob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+    const mdBlob = new Blob([markdown], { type: 'text/markdown' });
+
+    const jsonUrl = URL.createObjectURL(jsonBlob);
+    const jsonLink = document.createElement('a');
+    jsonLink.href = jsonUrl;
+    jsonLink.download = `${folderName}_results.json`;
+    jsonLink.click();
+    URL.revokeObjectURL(jsonUrl);
+
+    setTimeout(() => {
+      const mdUrl = URL.createObjectURL(mdBlob);
+      const mdLink = document.createElement('a');
+      mdLink.href = mdUrl;
+      mdLink.download = `${folderName}_results.md`;
+      mdLink.click();
+      URL.revokeObjectURL(mdUrl);
+    }, 100);
+
+    setExported(true);
+    setTimeout(() => setExported(false), 2000);
+  };
+
   const validCount = results.filter(r => r.status === 'valid').length;
   const avgLatency = results.filter(r => r.latencyMs).reduce((sum, r) => sum + (r.latencyMs || 0), 0) / results.filter(r => r.latencyMs).length;
   const vendors = new Set(results.map(r => r.provider)).size;
@@ -47,14 +117,24 @@ export default function ResultsTable({ results }: Props) {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Results</h2>
-        <button
-          onClick={copyResults}
-          className="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors"
-          aria-label="Copy results"
-        >
-          {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-          {copied ? 'Copied!' : 'Copy'}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={exportResults}
+            className="flex items-center gap-2 px-3 py-1.5 text-sm bg-neon-blue/10 hover:bg-neon-blue/20 text-neon-blue border border-neon-blue/30 rounded-lg transition-colors"
+            aria-label="Export results"
+          >
+            {exported ? <Check className="w-4 h-4" /> : <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>}
+            {exported ? 'Exported!' : 'Export'}
+          </button>
+          <button
+            onClick={copyResults}
+            className="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            aria-label="Copy results"
+          >
+            {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+            {copied ? 'Copied!' : 'Copy'}
+          </button>
+        </div>
       </div>
 
       <div className="overflow-x-auto border rounded-lg dark:border-gray-700">
