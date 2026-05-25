@@ -1,0 +1,75 @@
+# CheckAPI - LLM API Key Validator
+
+## Overview
+CheckAPI is a privacy-first web application that validates API keys for 12+ LLM providers including OpenAI, Anthropic, Google Gemini, Groq, Perplexity, HuggingFace, Replicate, Together AI, Cohere, and Mistral.
+
+## Key Features
+- Client-side validation (keys never leave browser)
+- Multi-provider support (OpenAI, Anthropic, Google Gemini, Groq, Perplexity, HuggingFace, Replicate, Together AI, Cohere, Mistral)
+- Detailed results with models, latency, and rate limits
+- Free API endpoint for programmatic access
+- CLI tool for automation
+- Dark mode support
+
+## Supported Providers
+1. OpenAI (GPT-4, GPT-3.5-turbo)
+2. Anthropic (Claude 3.5 Sonnet, Claude 3 Opus, Claude 3 Haiku)
+3. Google Gemini (Gemini Pro, Gemini Flash)
+4. Groq
+5. Perplexity
+6. HuggingFace
+7. Replicate
+8. Together AI
+9. Cohere
+10. Mistral
+11. AWS Bedrock (detection only)
+12. Azure OpenAI (detection only)
+
+## Privacy & Security
+- All validation happens client-side in your browser
+- API keys are never sent to proxy servers
+- Keys are never logged or stored
+- Direct API calls from browser to provider endpoints
+- Displayed keys are truncated (first 8 characters only)
+
+## API Usage
+Endpoint: POST https://checkapis.pages.dev/api/check
+Rate Limit: 20 requests per minute per IP
+
+Example:
+```bash
+curl -X POST https://checkapis.pages.dev/api/check \
+  -H "Content-Type: application/json" \
+  -d '{"keys": ["sk-proj-..."]}'
+```
+
+Response includes: provider, validity, models, latency, rate limits
+
+## CLI Usage
+```bash
+npm run build:cli
+node dist/cli/cli/index.js sk-proj-...
+node dist/cli/cli/index.js -f keys.txt
+cat keys.txt | node dist/cli/cli/index.js --json
+```
+
+## Technology Stack
+- Next.js 16 (App Router)
+- TypeScript
+- Tailwind CSS
+- Static export for Cloudflare Pages
+
+## Source Code
+GitHub: https://github.com/Teycir/CheckAPI
+License: MIT
+
+## Author
+Teycir Ben Soltane
+Website: https://teycirbensoltane.tn
+
+## Related Projects
+- Timeseal: Time-locked encryption vault
+- Sanctum: Zero-trust encrypted vault
+- GhostChat: P2P encrypted chat
+- BurpAPISecuritySuite: API security testing
+- Mcpwn: MCP server security scanner
