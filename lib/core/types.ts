@@ -1,6 +1,15 @@
 export type Confidence = 'definite' | 'likely' | 'unknown';
 export type ValidationStatus = 'valid' | 'invalid' | 'error' | 'untestable';
 
+export interface ValidationMetadata {
+  models?: string[];
+  modelCount?: number;
+  organization?: string;
+  username?: string;
+  type?: string;
+  rateLimit?: Record<string, string>;
+}
+
 export interface ValidationResult {
   key: string;
   truncatedKey: string;
@@ -8,7 +17,7 @@ export interface ValidationResult {
   confidence: Confidence;
   status: ValidationStatus;
   statusCode?: number;
-  metadata?: Record<string, any>;
+  metadata?: ValidationMetadata;
   errorMessage?: string;
   latencyMs?: number;
 }

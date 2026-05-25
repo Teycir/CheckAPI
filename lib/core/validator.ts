@@ -1,7 +1,7 @@
 import { ValidationResult, ValidatorOptions } from './types';
 import { ProviderDetector } from './detector';
 import { logger } from '../utils/logger';
-import { validateKeys, ValidationError } from '../utils/validation';
+import { validateKeys, ValidationError, assertAllowedEndpoint } from '../utils/validation';
 
 export class ApiKeyValidator {
   private options: Required<ValidatorOptions>;
@@ -103,6 +103,8 @@ export class ApiKeyValidator {
         throw new Error('Invalid URL generated');
       }
 
+      assertAllowedEndpoint(url);
+
       const response = await fetch(url, {
         method: 'GET',
         headers,
@@ -183,12 +185,14 @@ export class ApiKeyValidator {
         error: errorText.slice(0, 100)
       });
 
+      const status = (response.status === 401 || response.status === 403) ? 'invalid' : 'error';
+
       return {
         key,
         truncatedKey,
         provider: provider.name,
         confidence: provider.confidence,
-        status: 'invalid',
+        status,
         statusCode: response.status,
         errorMessage: errorText.slice(0, 200),
         latencyMs,
@@ -200,7 +204,7 @@ export class ApiKeyValidator {
         truncatedKey,
         provider: provider.name,
         confidence: provider.confidence,
-        status: 'invalid',
+        status: 'error',
         statusCode: response.status,
         errorMessage: 'Failed to read error response',
         latencyMs,

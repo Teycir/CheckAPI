@@ -123,7 +123,13 @@ export const llmProviders: ProviderConfig[] = [
       models: data?.data?.map((m: any) => m.id).filter(Boolean),
       modelCount: data?.data?.length,
     }),
-    testable: true,
+    testable: false,
+  },
+  {
+    name: 'Azure OpenAI',
+    pattern: /^[a-f0-9]{32}$/,
+    confidence: 'likely',
+    testable: false,
   },
   {
     name: 'Cohere',
@@ -135,7 +141,7 @@ export const llmProviders: ProviderConfig[] = [
       models: data?.models?.map((m: any) => m.name).filter(Boolean),
       modelCount: data?.models?.length,
     }),
-    testable: true,
+    testable: false,
   },
   {
     name: 'Mistral',
@@ -147,18 +153,12 @@ export const llmProviders: ProviderConfig[] = [
       models: data?.data?.map((m: any) => m.id).filter(Boolean),
       modelCount: data?.data?.length,
     }),
-    testable: true,
+    testable: false,
   },
   {
     name: 'AWS Bedrock',
     pattern: /^AKIA[A-Z0-9]{16}/,
     confidence: 'definite',
-    testable: false,
-  },
-  {
-    name: 'Azure OpenAI',
-    pattern: /^[a-f0-9]{32}$/,
-    confidence: 'likely',
     testable: false,
   },
 ];

@@ -7,6 +7,36 @@ export class ValidationError extends Error {
   }
 }
 
+const ALLOWED_HOSTS = new Set([
+  'api.cerebras.ai',
+  'openrouter.ai',
+  'api.anthropic.com',
+  'api.openai.com',
+  'generativelanguage.googleapis.com',
+  'api.groq.com',
+  'api.perplexity.ai',
+  'huggingface.co',
+  'api.replicate.com',
+  'api.together.xyz',
+  'api.cohere.com',
+  'api.mistral.ai',
+]);
+
+export function assertAllowedEndpoint(url: string): void {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    throw new ValidationError(`Invalid endpoint URL: ${url}`, 'INVALID_ENDPOINT_URL');
+  }
+  if (parsed.protocol !== 'https:') {
+    throw new ValidationError(`Endpoint must use HTTPS, got: ${parsed.protocol}`, 'ENDPOINT_NOT_HTTPS');
+  }
+  if (!ALLOWED_HOSTS.has(parsed.hostname)) {
+    throw new ValidationError(`Host not in allowlist: ${parsed.hostname}`, 'ENDPOINT_HOST_BLOCKED');
+  }
+}
+
 export function validateApiKey(key: string): void {
   if (!key || typeof key !== 'string') {
     throw new ValidationError('API key must be a non-empty string', 'INVALID_KEY_TYPE');
