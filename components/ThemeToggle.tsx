@@ -3,29 +3,30 @@
 import { Moon, Sun } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-function getInitialDark(): boolean {
+function getInitialLight(): boolean {
   if (typeof window === 'undefined') return false;
   const saved = localStorage.getItem('theme');
-  return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  // Default is dark; light only if explicitly saved or system prefers light
+  return saved === 'light' || (!saved && window.matchMedia('(prefers-color-scheme: light)').matches);
 }
 
 export default function ThemeToggle() {
-  const [dark, setDark] = useState<boolean | null>(null);
+  const [light, setLight] = useState<boolean | null>(null);
 
-  const isDark  = dark ?? false;
-  const mounted = dark !== null;
+  const isLight = light ?? false;
+  const mounted = light !== null;
 
   useEffect(() => {
-    const initial = getInitialDark();
-    document.documentElement.classList.toggle('dark', initial);
-    Promise.resolve().then(() => setDark(initial));
+    const initial = getInitialLight();
+    document.documentElement.classList.toggle('light', initial);
+    Promise.resolve().then(() => setLight(initial));
   }, []);
 
   const toggle = () => {
-    const newDark = !isDark;
-    document.documentElement.classList.toggle('dark', newDark);
-    localStorage.setItem('theme', newDark ? 'dark' : 'light');
-    setDark(newDark);
+    const newLight = !isLight;
+    document.documentElement.classList.toggle('light', newLight);
+    localStorage.setItem('theme', newLight ? 'light' : 'dark');
+    setLight(newLight);
   };
 
   if (!mounted) return <div className="w-9 h-9" />;
@@ -39,9 +40,9 @@ export default function ThemeToggle() {
       onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = 'transparent')}
       aria-label="Toggle theme"
     >
-      {isDark
-        ? <Sun  className="w-5 h-5" />
-        : <Moon className="w-5 h-5" />}
+      {isLight
+        ? <Moon className="w-5 h-5" />
+        : <Sun  className="w-5 h-5" />}
     </button>
   );
 }

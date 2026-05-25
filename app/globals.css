@@ -1,23 +1,10 @@
 @import "tailwindcss";
 
-/* ─── Tailwind v4: class-based dark mode ─── */
-@variant dark (&:where(.dark, .dark *));
+/* ─── Tailwind v4: class-based dark mode — default is dark, .light overrides ─── */
+@variant dark (&:where(:not(.light), :not(.light) *));
 
-/* ─── Light mode (default) ─── */
+/* ─── Dark mode (default) ─── */
 :root {
-  --neon-blue: #0088bb;
-  --dark-bg: #f0f4f8;
-  --dark-text: #1a1a2e;
-  --background: #f0f4f8;
-  --foreground: #1a1a2e;
-  --surface: #ffffff;
-  --surface-alt: #e8edf2;
-  --border: rgba(0, 136, 187, 0.2);
-  --scrollbar-track: rgba(0, 136, 187, 0.08);
-}
-
-/* ─── Dark mode ─── */
-.dark {
   --neon-blue: #00d4ff;
   --dark-bg: #0a0a0a;
   --dark-text: #e0e0e0;
@@ -27,6 +14,19 @@
   --surface-alt: #1a1a1a;
   --border: rgba(0, 212, 255, 0.2);
   --scrollbar-track: rgba(10, 10, 10, 0.5);
+}
+
+/* ─── Light mode (explicit toggle) ─── */
+.light {
+  --neon-blue: #0088bb;
+  --dark-bg: #f0f4f8;
+  --dark-text: #1a1a2e;
+  --background: #f0f4f8;
+  --foreground: #1a1a2e;
+  --surface: #ffffff;
+  --surface-alt: #e8edf2;
+  --border: rgba(0, 136, 187, 0.2);
+  --scrollbar-track: rgba(0, 136, 187, 0.08);
 }
 
 @theme inline {
@@ -50,14 +50,14 @@ body {
   touch-action: manipulation;
 }
 
-/* Dot-grid background — tinted in light, faint in dark */
+/* Dot-grid background — faint by default (dark), tinted in light */
 body {
-  background-image: radial-gradient(circle, color-mix(in srgb, var(--neon-blue) 12%, transparent) 1px, transparent 1px);
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--neon-blue) 4%, transparent) 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
-html.dark body {
-  background-image: radial-gradient(circle, color-mix(in srgb, var(--neon-blue) 4%, transparent) 1px, transparent 1px);
+html.light body {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--neon-blue) 12%, transparent) 1px, transparent 1px);
 }
 
 body::before {
@@ -67,14 +67,14 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.015;
+  opacity: 0.03;
   z-index: 9999;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
-html.dark body::before {
-  opacity: 0.03;
+html.light body::before {
+  opacity: 0.015;
 }
 
 ::-webkit-scrollbar {
@@ -144,10 +144,10 @@ html.dark body::before {
 
 /* ─── Theme transition ─── */
 html {
-  color-scheme: light;
-}
-html.dark {
   color-scheme: dark;
+}
+html.light {
+  color-scheme: light;
 }
 
 /* Smooth theme transitions */
@@ -155,8 +155,8 @@ body, body * {
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-/* Background beams visibility in light mode */
-html:not(.dark) .background-beams-svg {
+/* Background beams — dimmer in light mode */
+html.light .background-beams-svg {
   opacity: 0.15 !important;
 }
 @keyframes glitch-once {
