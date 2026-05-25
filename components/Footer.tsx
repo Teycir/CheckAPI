@@ -8,6 +8,12 @@ export function Footer() {
           <span className="text-neon-blue/70 flex items-center gap-1 flex-wrap justify-center">
             Built with <Heart className="w-3 h-3 inline fill-current" /> and <Lock className="w-3 h-3 inline" /> by <a href="https://teycirbensoltane.tn" target="_blank" rel="noopener noreferrer" className="hover:text-neon-blue transition-colors underline">Teycir Ben Soltane</a>
           </span>
+          <span className="text-neon-blue/50">•</span>
+          <a href="https://github.com/teycir/checkapi" target="_blank" rel="noopener noreferrer" className="text-neon-blue/70 hover:text-neon-blue transition-colors underline">Source Code</a>
+          <span className="text-neon-blue/50">•</span>
+          <a href="/how-to-use" className="text-neon-blue/70 hover:text-neon-blue transition-colors underline">How to Use</a>
+          <span className="text-neon-blue/50">•</span>
+          <a href="/faq" className="text-neon-blue/70 hover:text-neon-blue transition-colors underline">FAQ</a>
         </div>
         <div className="flex gap-3 items-center">
           <span className="text-neon-blue/50 leading-none">Share:</span>
