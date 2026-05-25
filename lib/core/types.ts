@@ -29,7 +29,7 @@ export interface ProviderConfig {
   endpoint?: string;
   buildHeaders?: (key: string) => Record<string, string>;
   buildUrl?: (endpoint: string, key: string) => string;
-  parseResponse?: (data: any) => Record<string, any>;
+  parseResponse?: (data: Record<string, unknown>) => Record<string, unknown>;
   testable: boolean;
 }
 

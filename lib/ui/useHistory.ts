@@ -37,12 +37,15 @@ function save(entries: HistoryEntry[]): void {
 }
 
 export function useHistory() {
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [history, setHistory] = useState<HistoryEntry[]>(() => {
+    if (typeof window === 'undefined') return [];
+    return load();
+  });
 
-  // Hydrate from localStorage on mount (client only)
+  // Sync to localStorage when history changes
   useEffect(() => {
-    setHistory(load());
-  }, []);
+    save(history);
+  }, [history]);
 
   const push = useCallback((results: ValidationResult[]) => {
     const entry: HistoryEntry = {
@@ -55,7 +58,6 @@ export function useHistory() {
 
     setHistory(prev => {
       const next = [entry, ...prev].slice(0, MAX_ENTRIES);
-      save(next);
       return next;
     });
 

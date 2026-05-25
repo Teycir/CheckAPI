@@ -1,29 +1,19 @@
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 interface LogContext {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 class Logger {
   private isDev = process.env.NODE_ENV === 'development';
 
   private log(level: LogLevel, message: string, context?: LogContext) {
-    const timestamp = new Date().toISOString();
-    const logData = {
-      timestamp,
-      level,
-      message,
-      ...context,
-    };
-
     if (this.isDev) {
       console[level === 'debug' ? 'log' : level](`[${level.toUpperCase()}]`, message, context || '');
     }
 
     // In production, you could send to analytics/monitoring service
-    if (level === 'error' && !this.isDev) {
-      // Example: sendToMonitoring(logData);
-    }
+    // if (level === 'error' && !this.isDev) sendToMonitoring({ timestamp: new Date().toISOString(), level, message, ...context });
   }
 
   debug(message: string, context?: LogContext) {

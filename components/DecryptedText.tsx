@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef } from 'react';
 import { useTextScramble } from '@/lib/ui/hooks';
 
 interface DecryptedTextProps {
@@ -20,7 +20,7 @@ export default function DecryptedText({
     encryptedClassName = '',
     animateOn = 'hover',
 }: DecryptedTextProps) {
-    const [isHovering, setIsHovering] = useState(false);
+    const isHoveringRef = useRef(false);
     const { displayText, scramble } = useTextScramble(text, {
         speed,
         maxIterations,
@@ -29,14 +29,14 @@ export default function DecryptedText({
 
     const handleMouseEnter = () => {
         if (animateOn === 'hover') {
-            setIsHovering(true);
+            isHoveringRef.current = true;
             scramble();
         }
     };
 
     const handleMouseLeave = () => {
         if (animateOn === 'hover') {
-            setIsHovering(false);
+            isHoveringRef.current = false;
         }
     };
 

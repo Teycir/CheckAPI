@@ -41,7 +41,7 @@ async function isRateLimited(ip, kv) {
           return { limited: true, retryAfter };
         }
       }
-    } catch (e) {
+    } catch {
       return { limited: false };
     }
   }

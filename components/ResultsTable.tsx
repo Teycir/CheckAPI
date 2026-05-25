@@ -14,7 +14,6 @@ interface Props {
 function useCountUp(target: number, duration = 800) {
   const [value, setValue] = useState(0);
   useEffect(() => {
-    setValue(0);
     const start = performance.now();
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
@@ -56,22 +55,20 @@ function getProviderStyle(provider: string) {
 }
 
 /* ─── Confetti burst ─── */
-function ConfettiBurst({ active }: { active: boolean }) {
-  const particles = useRef(
-    Array.from({ length: 30 }, (_, i) => ({
-      id: i,
-      x: 30 + Math.random() * 40,
-      delay: Math.random() * 0.4,
-      duration: 0.8 + Math.random() * 0.6,
-      color: ['#00d4ff', '#00ffaa', '#ff6ed0', '#ffe066', '#7b61ff'][i % 5],
-      size: 4 + Math.random() * 6,
-    }))
-  ).current;
+const CONFETTI_PARTICLES = Array.from({ length: 30 }, (_, i) => ({
+  id: i,
+  x: 30 + Math.random() * 40,
+  delay: Math.random() * 0.4,
+  duration: 0.8 + Math.random() * 0.6,
+  size: 4 + Math.random() * 6,
+  color: ['#00d4ff', '#00ffaa', '#ff6ed0', '#ffe066', '#7b61ff'][i % 5],
+}));
 
+function ConfettiBurst({ active }: { active: boolean }) {
   if (!active) return null;
   return (
     <div className="absolute inset-x-0 top-0 pointer-events-none" style={{ zIndex: 50 }}>
-      {particles.map((p) => (
+      {CONFETTI_PARTICLES.map((p) => (
         <div
           key={p.id}
           className="confetti-particle"
@@ -106,6 +103,7 @@ export default function ResultsTable({ results, disableConfetti = false }: Props
   const [copied, setCopied]       = useState(false);
   const [exported, setExported]   = useState(false);
   const [hoveredKey, setHoveredKey] = useState<number | null>(null);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const [showConfetti, setShowConfetti] = useState(false);
   const prevResultsLen = useRef(0);
 
@@ -130,11 +128,15 @@ export default function ResultsTable({ results, disableConfetti = false }: Props
       setTimeout(() => setShowConfetti(false), 1800);
     }
     prevResultsLen.current = results.length;
-  }, [results, validCount]);
+  }, [results, validCount, disableConfetti]);
 
   const toggleExpand = (index: number) => {
     const s = new Set(expanded);
-    s.has(index) ? s.delete(index) : s.add(index);
+    if (s.has(index)) {
+      s.delete(index);
+    } else {
+      s.add(index);
+    }
     setExpanded(s);
   };
 
@@ -209,6 +211,18 @@ export default function ResultsTable({ results, disableConfetti = false }: Props
   return (
     <div className="space-y-4 relative">
       <ConfettiBurst active={showConfetti} />
+
+      {/* Fixed-position key tooltip — renders above overflow clipping */}
+      {hoveredKey !== null && (
+        <div
+          className="fixed z-[9999] pointer-events-none"
+          style={{ left: tooltipPos.x + 12, top: tooltipPos.y - 36 }}
+        >
+          <div className="px-3 py-1.5 bg-gray-950 text-neon-blue text-xs font-mono rounded-lg shadow-xl border border-neon-blue/30 whitespace-nowrap">
+            {results[hoveredKey]?.key}
+          </div>
+        </div>
+      )}
       {/* Header row */}
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Results</h2>
@@ -258,17 +272,12 @@ export default function ResultsTable({ results, disableConfetti = false }: Props
                     onClick={() => toggleExpand(i)}
                   >
                     <td
-                      className="px-4 py-3 font-mono text-xs relative"
+                      className="px-4 py-3 font-mono text-xs cursor-default select-all"
                       onMouseEnter={() => setHoveredKey(i)}
                       onMouseLeave={() => setHoveredKey(null)}
+                      onMouseMove={(e) => setTooltipPos({ x: e.clientX, y: e.clientY })}
                     >
                       {result.truncatedKey}
-                      {hoveredKey === i && (
-                        <div className="absolute z-50 left-0 top-full mt-1 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg whitespace-nowrap border border-gray-700">
-                          {result.key}
-                          <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 border-l border-t border-gray-700 transform rotate-45"></div>
-                        </div>
-                      )}
                     </td>
                     <td className="px-4 py-3">
                       <span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded border text-xs font-mono ${pStyle.color}`}>

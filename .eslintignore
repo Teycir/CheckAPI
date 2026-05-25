@@ -1,0 +1,15 @@
+# Build outputs
+dist/
+out/
+.next/
+.wrangler/
+
+# Generated files
+*.js.map
+*.d.ts
+
+# Node modules
+node_modules/
+
+# Scripts (CommonJS)
+scripts/*.cjs

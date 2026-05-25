@@ -1,31 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
+const BEAM_DATA = Array.from({ length: 40 }, (_, i) => {
+  const startX = Math.random() * 100;
+  const endX = Math.random() * 100;
+  const control1X = Math.random() * 100;
+  const control2X = Math.random() * 100;
+  return {
+    id: i,
+    path: `M${startX} -20 C ${control1X} 20, ${control2X} 80, ${endX} 120`,
+    duration: Math.random() * 10 + 10,
+    delay: Math.random() * 10,
+  };
+});
+
 export const BackgroundBeams = ({ className }: { className?: string }) => {
-  const [beams, setBeams] = useState<
-    { id: number; path: string; duration: number; delay: number }[]
-  >([]);
-
-  useEffect(() => {
-    const newBeams = Array.from({ length: 40 }).map((_, i) => {
-      const startX = Math.random() * 100;
-      const endX = Math.random() * 100;
-      const control1X = Math.random() * 100;
-      const control2X = Math.random() * 100;
-
-      const path = `M${startX} -20 C ${control1X} 20, ${control2X} 80, ${endX} 120`;
-
-      return {
-        id: i,
-        path,
-        duration: Math.random() * 10 + 10,
-        delay: Math.random() * 10,
-      };
-    });
-    setBeams(newBeams);
-  }, []);
 
   return (
     <div className={`absolute inset-0 w-full h-full overflow-hidden pointer-events-none ${className}`}>
@@ -36,7 +27,7 @@ export const BackgroundBeams = ({ className }: { className?: string }) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {beams.map((beam) => (
+        {BEAM_DATA.map((beam) => (
           <motion.path
             key={beam.id}
             d={beam.path}

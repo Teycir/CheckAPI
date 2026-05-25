@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import KeysTextarea from '@/components/KeysTextarea';
 import CheckButton from '@/components/CheckButton';
 import ResultsTable from '@/components/ResultsTable';
+import StatsPanel from '@/components/StatsPanel';
 import HistoryPanel from '@/components/HistoryPanel';
 import { AnimatedTagline } from '@/components/AnimatedTagline';
 import { BackgroundBeams } from '@/components/ui/background-beams';
@@ -151,6 +152,7 @@ export default function Home() {
 
             {results.length > 0 && (
               <div className="mt-8">
+                <StatsPanel results={results} />
                 <ResultsTable results={results} />
               </div>
             )}

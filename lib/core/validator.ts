@@ -1,4 +1,4 @@
-import { ValidationResult, ValidatorOptions } from './types';
+import { ValidationResult, ValidatorOptions, ProviderConfig } from './types';
 import { ProviderDetector } from './detector';
 import { logger } from '../utils/logger';
 import { validateKeys, ValidationError, assertAllowedEndpoint } from '../utils/validation';
@@ -48,16 +48,22 @@ export class ApiKeyValidator {
   }
 
   private async validateParallel(keys: string[]): Promise<ValidationResult[]> {
-    const results = await Promise.allSettled(
-      keys.map(key => this.validateSingle(key))
-    );
+    const concurrency = 5;
+    const results: ValidationResult[] = [];
     
-    const fulfilled = results.filter(r => r.status === 'fulfilled').length;
-    logger.info('Parallel validation complete', { total: keys.length, fulfilled });
-
-    return results.map((r, i) => 
-      r.status === 'fulfilled' ? r.value : this.createErrorResult(keys[i], 'Promise rejected')
-    );
+    for (let i = 0; i < keys.length; i += concurrency) {
+      const batch = keys.slice(i, i + concurrency);
+      const batchResults = await Promise.allSettled(
+        batch.map(key => this.validateSingle(key))
+      );
+      
+      results.push(...batchResults.map((r, idx) => 
+        r.status === 'fulfilled' ? r.value : this.createErrorResult(batch[idx], 'Promise rejected')
+      ));
+    }
+    
+    logger.info('Parallel validation complete', { total: keys.length, batches: Math.ceil(keys.length / concurrency) });
+    return results;
   }
 
   private async validateSequential(keys: string[]): Promise<ValidationResult[]> {
@@ -125,7 +131,7 @@ export class ApiKeyValidator {
       }
 
       return await this.handleErrorResponse(response, key, truncatedKey, provider, latencyMs);
-    } catch (error: any) {
+    } catch (error: unknown) {
       clearTimeout(timeout);
       const latencyMs = Date.now() - start;
       
@@ -137,7 +143,7 @@ export class ApiKeyValidator {
     response: Response,
     key: string,
     truncatedKey: string,
-    provider: any,
+    provider: ProviderConfig,
     latencyMs: number
   ): Promise<ValidationResult> {
     try {
@@ -174,7 +180,7 @@ export class ApiKeyValidator {
     response: Response,
     key: string,
     truncatedKey: string,
-    provider: any,
+    provider: ProviderConfig,
     latencyMs: number
   ): Promise<ValidationResult> {
     try {
@@ -213,25 +219,25 @@ export class ApiKeyValidator {
   }
 
   private handleException(
-    error: any,
+    error: unknown,
     key: string,
     truncatedKey: string,
-    provider: any,
+    provider: ProviderConfig,
     latencyMs: number
   ): ValidationResult {
     let errorMessage = 'Unknown error';
 
-    if (error.name === 'AbortError') {
+    if (error && typeof error === 'object' && 'name' in error && error.name === 'AbortError') {
       errorMessage = 'Timeout';
       logger.warn('Request timeout', { provider: provider.name, timeout: this.options.timeout });
-    } else if (error.message?.includes('CORS')) {
+    } else if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string' && error.message.includes('CORS')) {
       errorMessage = 'CORS blocked';
       logger.warn('CORS error', { provider: provider.name });
     } else if (error instanceof TypeError && error.message.includes('fetch')) {
       errorMessage = 'Network error';
       logger.error('Network error', error, { provider: provider.name });
     } else {
-      errorMessage = error.message || 'Request failed';
+      errorMessage = error && typeof error === 'object' && 'message' in error && typeof error.message === 'string' ? error.message : 'Request failed';
       logger.error('Validation request failed', error, { provider: provider.name });
     }
 

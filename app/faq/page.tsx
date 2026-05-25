@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { BackgroundBeams } from '@/components/ui/background-beams';
 import DecryptedText from '@/components/DecryptedText';
 
@@ -61,14 +62,14 @@ export default function FAQPage() {
             <p className="text-neon-blue/60 text-sm mb-2">Simple 3-step process:</p>
             <ul className="list-disc list-inside ml-4 space-y-1 text-xs text-neon-blue/60">
               <li>Paste your API keys (one per line)</li>
-              <li>Click "CHECK KEYS"</li>
+              <li>Click &quot;CHECK KEYS&quot;</li>
               <li>View results with status, models, and rate limits</li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-base sm:text-lg font-bold text-neon-blue mb-2">What information does CheckAPIs show?</h3>
-            <p className="text-neon-blue/60 text-sm mb-2">For each key, you'll see:</p>
+            <p className="text-neon-blue/60 text-sm mb-2">For each key, you&apos;ll see:</p>
             <ul className="list-disc list-inside ml-4 space-y-1 text-xs text-neon-blue/60">
               <li><strong className="text-neon-blue">Status:</strong> Valid ✓ or Invalid ✗</li>
               <li><strong className="text-neon-blue">Provider:</strong> Detected API provider</li>
@@ -90,7 +91,7 @@ export default function FAQPage() {
           </div>
 
           <div>
-            <h3 className="text-base sm:text-lg font-bold text-neon-blue mb-2">What does "Invalid Key" mean?</h3>
+            <h3 className="text-base sm:text-lg font-bold text-neon-blue mb-2">What does &quot;Invalid Key&quot; mean?</h3>
             <p className="text-neon-blue/60 text-sm mb-2">A key can be invalid for several reasons:</p>
             <ul className="list-disc list-inside ml-4 space-y-1 text-xs text-neon-blue/60">
               <li>Key has been revoked or deleted</li>
@@ -117,8 +118,8 @@ export default function FAQPage() {
           </div>
 
           <div>
-            <h3 className="text-base sm:text-lg font-bold text-neon-blue mb-2">What if a provider's API is down?</h3>
-            <p className="text-neon-blue/60 text-sm">CheckAPIs will show a timeout or connection error. This doesn't mean your key is invalid—just that the provider's API is temporarily unavailable.</p>
+            <h3 className="text-base sm:text-lg font-bold text-neon-blue mb-2">What if a provider&apos;s API is down?</h3>
+            <p className="text-neon-blue/60 text-sm">CheckAPIs will show a timeout or connection error. This doesn&apos;t mean your key is invalid—just that the provider&apos;s API is temporarily unavailable.</p>
           </div>
 
           <div>
@@ -164,9 +165,9 @@ export default function FAQPage() {
         </div>
 
         <div className="text-center pt-4">
-          <a href="/" className="inline-block px-6 py-3 bg-dark-bg/80 backdrop-blur-sm border-2 border-neon-blue rounded-xl hover:border-neon-blue hover:shadow-[0_0_20px_rgba(0,212,255,0.3)] transition-all text-neon-blue font-mono">
+          <Link href="/" className="inline-block px-6 py-3 bg-dark-bg/80 backdrop-blur-sm border-2 border-neon-blue rounded-xl hover:border-neon-blue hover:shadow-[0_0_20px_rgba(0,212,255,0.3)] transition-all text-neon-blue font-mono">
             CHECK YOUR KEYS
-          </a>
+          </Link>
         </div>
       </div>
     </div>

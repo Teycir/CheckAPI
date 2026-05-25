@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { BackgroundBeams } from '@/components/ui/background-beams';
 import DecryptedText from '@/components/DecryptedText';
 import { Key, CheckCircle, AlertCircle, Clock, Shield, Zap } from 'lucide-react';
@@ -28,7 +29,7 @@ export default function HowToUsePage() {
             </h2>
             <p className="text-neon-blue/80 mb-2 text-sm sm:text-base">Enter Your Keys</p>
             <p className="text-neon-blue/60 text-sm leading-relaxed mb-3">
-              In the text area labeled "LLM API keys — one per line", paste your API keys. You can check multiple keys at once by entering each on a new line.
+              In the text area labeled &quot;LLM API keys — one per line&quot;, paste your API keys. You can check multiple keys at once by entering each on a new line.
             </p>
             <div className="bg-dark-bg/50 border border-neon-blue/20 rounded-lg p-3 font-mono text-xs text-neon-blue/70">
               sk-ant-api03-...<br/>
@@ -39,11 +40,11 @@ export default function HowToUsePage() {
 
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-neon-blue mb-4 flex items-center gap-2">
-              <Zap className="w-6 h-6" /> Step 2: Click "CHECK KEYS"
+              <Zap className="w-6 h-6" /> Step 2: Click &quot;CHECK KEYS&quot;
             </h2>
             <p className="text-neon-blue/80 mb-2 text-sm sm:text-base">Instant Validation</p>
             <p className="text-neon-blue/60 text-sm leading-relaxed mb-3">
-              Click the glowing "CHECK KEYS" button. CheckAPIs will automatically:
+              Click the glowing &quot;CHECK KEYS&quot; button. CheckAPIs will automatically:
             </p>
             <ul className="text-neon-blue/60 text-sm space-y-2 list-disc list-inside">
               <li>Detect the provider for each key</li>
@@ -86,7 +87,7 @@ export default function HowToUsePage() {
               <li><strong className="text-neon-blue">Client-Side Only:</strong> All validation runs in your browser</li>
               <li><strong className="text-neon-blue">Direct API Calls:</strong> Keys sent directly to providers, never to our servers</li>
               <li><strong className="text-neon-blue">No Logging:</strong> Keys never logged, stored, or transmitted to third parties</li>
-              <li><strong className="text-neon-blue">No Analytics:</strong> We don't track what keys you check</li>
+              <li><strong className="text-neon-blue">No Analytics:</strong> We don&apos;t track what keys you check</li>
               <li><strong className="text-neon-blue">Open Source:</strong> Code is public for security audits</li>
               <li><strong className="text-neon-blue">Memory Only:</strong> Keys cleared from memory after validation</li>
             </ul>
@@ -102,7 +103,7 @@ export default function HowToUsePage() {
                 <span className="text-green-400 text-lg">✓</span>
                 <div>
                   <p className="text-neon-blue font-bold">Valid Key</p>
-                  <p className="text-neon-blue/60">Key is active and working. You'll see available models and rate limits.</p>
+                  <p className="text-neon-blue/60">Key is active and working. You&apos;ll see available models and rate limits.</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -155,7 +156,7 @@ export default function HowToUsePage() {
           <h2 className="text-xl sm:text-2xl font-bold text-neon-blue mb-4">Tips & Best Practices</h2>
           <ul className="text-neon-blue/60 text-sm space-y-2 list-disc list-inside">
             <li><strong className="text-neon-blue">Batch Checking:</strong> Check multiple keys at once for efficiency</li>
-            <li><strong className="text-neon-blue">Regular Validation:</strong> Periodically verify keys haven't been revoked</li>
+            <li><strong className="text-neon-blue">Regular Validation:</strong> Periodically verify keys haven&apos;t been revoked</li>
             <li><strong className="text-neon-blue">Error Messages:</strong> Read error details to understand why a key failed</li>
             <li><strong className="text-neon-blue">Latency Monitoring:</strong> High latency may indicate provider issues</li>
             <li><strong className="text-neon-blue">Rate Limits:</strong> Check limits to avoid hitting quotas in production</li>
@@ -183,25 +184,25 @@ export default function HowToUsePage() {
             <div>
               <p className="text-neon-blue font-bold mb-2 text-sm">Example Request:</p>
               <div className="bg-dark-bg/50 border border-neon-blue/20 rounded-lg p-3 font-mono text-xs text-neon-blue/70 overflow-x-auto">
-                curl -X POST https://checkapis.pages.dev/api/check \<br/>
-                &nbsp;&nbsp;-H &quot;Content-Type: application/json&quot; \<br/>
-                &nbsp;&nbsp;-d &apos;{'{'}&#34;keys&#34;: [&#34;sk-proj-...&#34;, &#34;sk-ant-...&#34;]{'}'}&#39;
+                curl -X POST https://checkapis.pages.dev/api/check <br/>
+                &nbsp;&nbsp;-H &quot;Content-Type: application/json&quot; <br/>
+                &nbsp;&nbsp;-d &apos;&#123;&quot;keys&quot;: [&quot;sk-proj-...&quot;, &quot;sk-ant-...&quot;]&#125;&apos;
               </div>
             </div>
 
             <div>
               <p className="text-neon-blue font-bold mb-2 text-sm">Response:</p>
               <div className="bg-dark-bg/50 border border-neon-blue/20 rounded-lg p-3 font-mono text-xs text-neon-blue/70 overflow-x-auto">
-                {'{'}<br/>
-                &nbsp;&nbsp;&#34;success&#34;: true,<br/>
-                &nbsp;&nbsp;&#34;count&#34;: 2,<br/>
-                &nbsp;&nbsp;&#34;results&#34;: [<br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;{'{'}<br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#34;key&#34;: &#34;sk-proj-...&#34;,<br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#34;provider&#34;: &#34;openai&#34;,<br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#34;valid&#34;: true,<br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#34;models&#34;: [&#34;gpt-4&#34;, &#34;gpt-3.5-turbo&#34;],<br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#34;latency&#34;: 245<br/>
+                {'{'}{'{'}<br/>
+                &nbsp;&nbsp;&quot;success&quot;: true,<br/>
+                &nbsp;&nbsp;&quot;count&quot;: 2,<br/>
+                &nbsp;&nbsp;&quot;results&quot;: [<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;{'{'}{'{'}<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;key&quot;: &quot;sk-proj-...&quot;,<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;provider&quot;: &quot;openai&quot;,<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;valid&quot;: true,<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;models&quot;: [&quot;gpt-4&quot;, &quot;gpt-3.5-turbo&quot;],<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;latency&quot;: 245<br/>
                 &nbsp;&nbsp;&nbsp;&nbsp;{'}'}<br/>
                 &nbsp;&nbsp;]<br/>
                 {'}'}
@@ -221,9 +222,9 @@ export default function HowToUsePage() {
         </div>
 
         <div className="text-center pt-4">
-          <a href="/" className="inline-block px-6 py-3 bg-dark-bg/80 backdrop-blur-sm border-2 border-neon-blue rounded-xl hover:border-neon-blue hover:shadow-[0_0_20px_rgba(0,212,255,0.3)] transition-all text-neon-blue font-mono">
+          <Link href="/" className="inline-block px-6 py-3 bg-dark-bg/80 backdrop-blur-sm border-2 border-neon-blue rounded-xl hover:border-neon-blue hover:shadow-[0_0_20px_rgba(0,212,255,0.3)] transition-all text-neon-blue font-mono">
             CHECK YOUR KEYS
-          </a>
+          </Link>
         </div>
       </div>
     </div>
