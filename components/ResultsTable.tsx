@@ -140,7 +140,11 @@ export default function ResultsTable({ results, disableConfetti = false }: Props
 
   const toggleExpand = (index: number) => {
     const s = new Set(expanded);
-    s.has(index) ? s.delete(index) : s.add(index);
+    if (s.has(index)) {
+      s.delete(index);
+    } else {
+      s.add(index);
+    }
     setExpanded(s);
   };
 
@@ -180,7 +184,7 @@ export default function ResultsTable({ results, disableConfetti = false }: Props
       if (r.metadata?.modelCount) markdown += `- **Models:** ${r.metadata.modelCount}\n`;
       if (r.latencyMs) markdown += `- **Latency:** ${r.latencyMs}ms\n`;
       if (r.errorMessage) markdown += `- **Error:** ${r.errorMessage}\n`;
-      if (r.metadata?.models?.length > 0) {
+      if (r.metadata?.models && r.metadata.models.length > 0) {
         markdown += `\n**Available Models:**\n\n`;
         r.metadata.models.slice(0, 10).forEach((m: string) => { markdown += `- ${m}\n`; });
         if (r.metadata.models.length > 10) markdown += `- ... and ${r.metadata.models.length - 10} more\n`;

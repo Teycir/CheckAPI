@@ -17,8 +17,8 @@ npm run lint || {
 }
 
 # Check if wrangler is available
-if ! command -v wrangler &> /dev/null; then
-  echo "❌ Wrangler CLI not found. Install with: npm install -g wrangler"
+if ! command -v wrangler &> /dev/null && ! command -v npx &> /dev/null; then
+  echo "❌ Neither wrangler nor npx found. Install wrangler with: npm install -g wrangler"
   exit 1
 fi
 
