@@ -45,9 +45,9 @@ export default function Home() {
     <div className="relative">
       <BackgroundBeams className="fixed top-0 left-0 w-full h-full z-0" />
       
-      <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
-        <header className="text-center mb-8 relative">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold glow-text pulse-glow mb-4">
+      <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8 relative z-10">
+        <header className="text-center mb-6 sm:mb-8 relative">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold glow-text pulse-glow mb-3 sm:mb-4">
             <DecryptedText
               text="CheckAPIs"
               animateOn="view"
@@ -63,14 +63,14 @@ export default function Home() {
             href="https://github.com/teycir/checkapi"
             target="_blank"
             rel="noopener noreferrer"
-            className="absolute top-0 right-0 flex items-center gap-2 px-4 py-2 bg-dark-bg/80 backdrop-blur-sm border-2 border-neon-blue/30 rounded-xl hover:border-neon-blue transition-all"
+            className="hidden sm:flex absolute top-0 right-0 items-center gap-2 px-3 py-2 bg-dark-bg/80 backdrop-blur-sm border-2 border-neon-blue/30 rounded-xl hover:border-neon-blue transition-all"
           >
-            <Code className="w-5 h-5 text-neon-blue" />
-            <span className="text-sm text-neon-blue/70 font-mono">Source</span>
+            <Code className="w-4 h-4 text-neon-blue" />
+            <span className="text-xs text-neon-blue/70 font-mono">Source</span>
           </a>
         </header>
 
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <KeysTextarea
             value={input}
             onChange={setInput}
