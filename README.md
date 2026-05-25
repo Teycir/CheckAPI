@@ -45,7 +45,7 @@ curl -X POST https://checkapis.pages.dev/api/check \
 }
 ```
 
-See [API.md](./API.md) for full documentation.
+**Rate Limiting**: 20 requests per minute per IP. See [docs/API.md](./docs/API.md) for full documentation.
 
 ## Supported Providers
 
@@ -95,6 +95,11 @@ npm install -g wrangler
 wrangler pages deploy out --project-name=checkapi
 ```
 
+Or use the deployment script:
+```bash
+./scripts/deploy.sh
+```
+
 ### Via GitHub Actions
 
 Connect your GitHub repository to Cloudflare Pages. The build settings:
@@ -102,6 +107,8 @@ Connect your GitHub repository to Cloudflare Pages. The build settings:
 - **Build command**: `npm run build`
 - **Build output directory**: `out`
 - **Root directory**: `/`
+
+See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for detailed instructions.
 
 ## Privacy & Security
 
@@ -117,6 +124,26 @@ Connect your GitHub repository to Cloudflare Pages. The build settings:
 - Tailwind CSS
 - Lucide React (icons)
 - Static export for Cloudflare Pages
+
+## Project Structure
+
+```
+├── app/              # Next.js app router pages
+├── components/       # React components
+├── docs/            # Documentation
+│   ├── API.md       # API documentation
+│   ├── DEPLOYMENT.md
+│   ├── RATE_LIMITING.md
+│   └── roadmap.md
+├── functions/       # Cloudflare Pages Functions
+│   └── api/
+│       └── check.js # API endpoint with rate limiting
+├── lib/             # Utility functions
+├── public/          # Static assets
+├── scripts/         # Deployment and utility scripts
+├── tests/           # Test scripts
+└── wrangler.toml    # Cloudflare configuration
+```
 
 ## License
 

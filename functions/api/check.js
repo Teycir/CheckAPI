@@ -7,6 +7,49 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+const RATE_LIMIT = 20;
+const WINDOW_MS = 60000;
+const requestLog = new Map();
+
+async function isRateLimited(ip, kv) {
+  const now = Date.now();
+  const cutoff = now - WINDOW_MS;
+  
+  if (!requestLog.has(ip)) requestLog.set(ip, []);
+  const timestamps = requestLog.get(ip).filter(t => t > cutoff);
+  requestLog.set(ip, timestamps);
+  
+  if (timestamps.length >= RATE_LIMIT) {
+    const oldestInWindow = Math.min(...timestamps);
+    const retryAfter = Math.ceil((oldestInWindow + WINDOW_MS - now) / 1000);
+    return { limited: true, retryAfter };
+  }
+  
+  if (kv) {
+    try {
+      const bucket = Math.floor(now / WINDOW_MS);
+      const key = `rl:${ip}:${bucket}`;
+      const CAS_MAX_RETRIES = 3;
+      
+      for (let i = 0; i < CAS_MAX_RETRIES; i++) {
+        const current = parseInt(await kv.get(key) || '0', 10);
+        await kv.put(key, String(current + 1), { expirationTtl: 120 });
+        const verified = parseInt(await kv.get(key) || '0', 10);
+        
+        if (verified > RATE_LIMIT) {
+          const retryAfter = Math.ceil((bucket + 1) * WINDOW_MS / 1000 - now / 1000);
+          return { limited: true, retryAfter };
+        }
+      }
+    } catch (e) {
+      return { limited: false };
+    }
+  }
+  
+  timestamps.push(now);
+  return { limited: false };
+}
+
 export async function onRequestOptions() {
   return new Response(null, { headers: corsHeaders });
 }
@@ -28,6 +71,26 @@ export async function onRequestGet() {
 }
 
 export async function onRequestPost(context) {
+  const ip = context.request.headers.get('CF-Connecting-IP') || 'unknown';
+  const rateLimitResult = await isRateLimited(ip, context.env.RATE_LIMIT_KV);
+  
+  if (rateLimitResult.limited) {
+    return new Response(
+      JSON.stringify({ 
+        error: 'Rate limit exceeded', 
+        retryAfter: rateLimitResult.retryAfter 
+      }),
+      { 
+        status: 429, 
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'Retry-After': String(rateLimitResult.retryAfter)
+        } 
+      }
+    );
+  }
+  
   try {
     const body = await context.request.json();
     const { keys } = body;

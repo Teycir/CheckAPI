@@ -4,6 +4,7 @@ export * from './core/validator';
 export * from './providers/llm-providers';
 export * from './utils/validation';
 export * from './utils/logger';
+export * from './ui/useHistory';
 
 import { ApiKeyValidator } from './core/validator';
 import { ProviderDetector } from './core/detector';
