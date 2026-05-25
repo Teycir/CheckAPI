@@ -25,7 +25,7 @@ export default function ResultsTable({ results }: Props) {
 
   const copyResults = async () => {
     const text = results.map(r => 
-      `${r.truncatedKey} | ${r.provider} | ${r.status} | ${r.metadata?.modelCount || '—'} models | ${r.latencyMs || '—'}ms`
+      `${r.key} | ${r.provider} | ${r.status} | ${r.metadata?.modelCount || '—'} models | ${r.latencyMs || '—'}ms`
     ).join('\n');
     await navigator.clipboard.writeText(text);
     setCopied(true);
@@ -45,7 +45,7 @@ export default function ResultsTable({ results }: Props) {
         providers: Array.from(new Set(results.map(r => r.provider))),
       },
       results: results.map(r => ({
-        key: r.truncatedKey,
+        key: r.key,
         provider: r.provider,
         status: r.status,
         valid: r.status === 'valid',
@@ -66,7 +66,7 @@ export default function ResultsTable({ results }: Props) {
     markdown += `- **Average Latency:** ${avgLatency}ms\n\n## Results\n\n`;
     
     results.forEach((r, i) => {
-      markdown += `### ${i + 1}. ${r.truncatedKey}\n\n- **Provider:** ${r.provider}\n- **Status:** ${r.status === 'valid' ? '✓ Valid' : '✗ Invalid'}\n`;
+      markdown += `### ${i + 1}. ${r.key}\n\n- **Provider:** ${r.provider}\n- **Status:** ${r.status === 'valid' ? '✓ Valid' : '✗ Invalid'}\n`;
       if (r.metadata?.modelCount) markdown += `- **Models:** ${r.metadata.modelCount}\n`;
       if (r.latencyMs) markdown += `- **Latency:** ${r.latencyMs}ms\n`;
       if (r.errorMessage) markdown += `- **Error:** ${r.errorMessage}\n`;
@@ -153,7 +153,7 @@ export default function ResultsTable({ results }: Props) {
             {results.map((result, i) => (
               <>
                 <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer" onClick={() => toggleExpand(i)}>
-                  <td className="px-4 py-3 font-mono text-xs">{result.truncatedKey}</td>
+                  <td className="px-4 py-3 font-mono text-xs" title={result.key}>{result.truncatedKey}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs ${
                       result.confidence === 'definite' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
@@ -171,31 +171,35 @@ export default function ResultsTable({ results }: Props) {
                   <td className="px-4 py-3">{result.metadata?.modelCount || '—'}</td>
                   <td className="px-4 py-3">{result.latencyMs ? `${result.latencyMs}ms` : '—'}</td>
                   <td className="px-4 py-3">
-                    {(result.metadata || result.errorMessage) && (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); toggleExpand(i); }}
-                        className="flex items-center gap-1 px-2 py-1 text-xs text-neon-blue hover:text-neon-blue/80 border border-neon-blue/30 rounded hover:border-neon-blue transition-colors"
-                        aria-label={expanded.has(i) ? 'Hide details' : 'Show details'}
-                      >
-                        {expanded.has(i) ? (
-                          <>
-                            <ChevronDown className="w-3 h-3" />
-                            Hide
-                          </>
-                        ) : (
-                          <>
-                            <ChevronRight className="w-3 h-3" />
-                            Details
-                          </>
-                        )}
-                      </button>
-                    )}
+                    <button
+                      onClick={(e) => { e.stopPropagation(); toggleExpand(i); }}
+                      className="flex items-center gap-1 px-2 py-1 text-xs text-neon-blue hover:text-neon-blue/80 border border-neon-blue/30 rounded hover:border-neon-blue transition-colors"
+                      aria-label={expanded.has(i) ? 'Hide details' : 'Show details'}
+                    >
+                      {expanded.has(i) ? (
+                        <>
+                          <ChevronDown className="w-3 h-3" />
+                          Hide
+                        </>
+                      ) : (
+                        <>
+                          <ChevronRight className="w-3 h-3" />
+                          Details
+                        </>
+                      )}
+                    </button>
                   </td>
                 </tr>
                 {expanded.has(i) && (
                   <tr key={`${i}-detail`}>
                     <td colSpan={6} className="px-4 py-3 bg-gray-50 dark:bg-gray-800">
                       <div className="space-y-2 text-xs">
+                        <div><strong>Full Key:</strong> <span className="font-mono break-all">{result.key}</span></div>
+                        {result.status === 'untestable' && (
+                          <div className="text-yellow-600 dark:text-yellow-400">
+                            <strong>Reason:</strong> Provider &quot;{result.provider}&quot; could not be identified — key format is not recognized. Validation was skipped.
+                          </div>
+                        )}
                         {result.statusCode && <div><strong>Status Code:</strong> {result.statusCode}</div>}
                         {result.metadata?.organization && <div><strong>Organization:</strong> {result.metadata.organization}</div>}
                         {result.metadata?.username && <div><strong>Username:</strong> {result.metadata.username}</div>}

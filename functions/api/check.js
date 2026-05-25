@@ -55,11 +55,12 @@ export async function onRequestPost(context) {
 
     const results = await Promise.all(
       keys.map(async (key) => {
+        const trimmedKey = typeof key === 'string' ? key.trim() : key;
         try {
-          return await validateKey(key);
+          return await validateKey(trimmedKey);
         } catch (error) {
           return {
-            key: key.substring(0, 8) + '...',
+            key: trimmedKey,
             provider: 'unknown',
             valid: false,
             error: error.message
@@ -89,7 +90,7 @@ async function validateKey(key) {
   
   if (!provider) {
     return {
-      key: key.substring(0, 8) + '...',
+      key,
       provider: 'unknown',
       valid: false,
       error: 'Unknown provider'
@@ -102,7 +103,7 @@ async function validateKey(key) {
     const latency = Date.now() - startTime;
 
     return {
-      key: key.substring(0, 8) + '...',
+      key,
       provider: provider.name,
       valid: validation.valid,
       models: validation.models || [],
@@ -112,7 +113,7 @@ async function validateKey(key) {
     };
   } catch (error) {
     return {
-      key: key.substring(0, 8) + '...',
+      key,
       provider: provider.name,
       valid: false,
       error: error.message
