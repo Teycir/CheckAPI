@@ -28,14 +28,22 @@ function useCountUp(target: number, duration = 800) {
 
 /* ─── Provider badge config ─── */
 const PROVIDER_CONFIG: Record<string, { color: string; icon: string }> = {
-  openai:     { color: 'bg-emerald-900/50 text-emerald-300 border-emerald-700/50',   icon: '⬡' },
-  anthropic:  { color: 'bg-orange-900/50 text-orange-300 border-orange-700/50',      icon: '◈' },
-  google:     { color: 'bg-blue-900/50 text-blue-300 border-blue-700/50',            icon: '✦' },
-  groq:       { color: 'bg-purple-900/50 text-purple-300 border-purple-700/50',      icon: '⚡' },
-  mistral:    { color: 'bg-yellow-900/50 text-yellow-300 border-yellow-700/50',      icon: '◎' },
-  cohere:     { color: 'bg-pink-900/50 text-pink-300 border-pink-700/50',            icon: '❋' },
-  together:   { color: 'bg-teal-900/50 text-teal-300 border-teal-700/50',            icon: '◉' },
-  default:    { color: 'bg-gray-800/50 text-gray-300 border-gray-700/50',            icon: '◇' },
+  openai:       { color: 'bg-emerald-900/50 text-emerald-300 border-emerald-700/50',   icon: '⬡' },
+  anthropic:    { color: 'bg-orange-900/50 text-orange-300 border-orange-700/50',      icon: '◈' },
+  google:       { color: 'bg-blue-900/50 text-blue-300 border-blue-700/50',            icon: '✦' },
+  groq:         { color: 'bg-purple-900/50 text-purple-300 border-purple-700/50',      icon: '⚡' },
+  mistral:      { color: 'bg-yellow-900/50 text-yellow-300 border-yellow-700/50',      icon: '◎' },
+  cohere:       { color: 'bg-pink-900/50 text-pink-300 border-pink-700/50',            icon: '❋' },
+  together:     { color: 'bg-teal-900/50 text-teal-300 border-teal-700/50',            icon: '◉' },
+  cerebras:     { color: 'bg-cyan-900/50 text-cyan-300 border-cyan-700/50',            icon: '◆' },
+  openrouter:   { color: 'bg-indigo-900/50 text-indigo-300 border-indigo-700/50',      icon: '◈' },
+  perplexity:   { color: 'bg-violet-900/50 text-violet-300 border-violet-700/50',      icon: '◉' },
+  huggingface:  { color: 'bg-amber-900/50 text-amber-300 border-amber-700/50',         icon: '🤗' },
+  replicate:    { color: 'bg-rose-900/50 text-rose-300 border-rose-700/50',            icon: '◎' },
+  azure:        { color: 'bg-sky-900/50 text-sky-300 border-sky-700/50',               icon: '☁' },
+  aws:          { color: 'bg-orange-900/50 text-orange-300 border-orange-700/50',      icon: '☁' },
+  unknown:      { color: 'bg-gray-800/50 text-gray-400 border-gray-700/50',            icon: '?' },
+  default:      { color: 'bg-gray-800/50 text-gray-300 border-gray-700/50',            icon: '◇' },
 };
 
 function getProviderStyle(provider: string) {
