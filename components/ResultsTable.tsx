@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ValidationResult } from '@/lib';
 import { CheckCircle2, XCircle, AlertCircle, ChevronDown, ChevronRight, Copy, Check } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface Props {
   results: ValidationResult[];
+  disableConfetti?: boolean;
 }
 
 /* ─── Animated counter hook ─── */
@@ -59,7 +60,7 @@ function ConfettiBurst({ active }: { active: boolean }) {
   const particles = useRef(
     Array.from({ length: 30 }, (_, i) => ({
       id: i,
-      x: 40 + Math.random() * 20,
+      x: 30 + Math.random() * 40,
       delay: Math.random() * 0.4,
       duration: 0.8 + Math.random() * 0.6,
       color: ['#00d4ff', '#00ffaa', '#ff6ed0', '#ffe066', '#7b61ff'][i % 5],
@@ -69,7 +70,7 @@ function ConfettiBurst({ active }: { active: boolean }) {
 
   if (!active) return null;
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="absolute inset-x-0 top-0 pointer-events-none" style={{ zIndex: 50 }}>
       {particles.map((p) => (
         <div
           key={p.id}
@@ -90,9 +91,9 @@ function ConfettiBurst({ active }: { active: boolean }) {
 }
 
 /* ─── Status icon with pop-in ─── */
-function StatusIcon({ status, key: _key }: { status: string; key: string }) {
+function StatusIcon({ status, uid }: { status: string; uid: string }) {
   return (
-    <span key={_key} className="inline-block icon-pop">
+    <span key={uid} className="inline-block icon-pop">
       {status === 'valid'   && <CheckCircle2  className="w-5 h-5 text-green-400" />}
       {status === 'invalid' && <XCircle       className="w-5 h-5 text-red-400" />}
       {(status === 'error' || status === 'untestable') && <AlertCircle className="w-5 h-5 text-yellow-400" />}
@@ -100,7 +101,7 @@ function StatusIcon({ status, key: _key }: { status: string; key: string }) {
   );
 }
 
-export default function ResultsTable({ results }: Props) {
+export default function ResultsTable({ results, disableConfetti = false }: Props) {
   const [expanded, setExpanded]   = useState<Set<number>>(new Set());
   const [copied, setCopied]       = useState(false);
   const [exported, setExported]   = useState(false);
@@ -120,6 +121,7 @@ export default function ResultsTable({ results }: Props) {
   /* fire confetti when a fresh perfect batch arrives */
   useEffect(() => {
     if (
+      !disableConfetti &&
       results.length > 0 &&
       results.length !== prevResultsLen.current &&
       validCount === results.length
@@ -205,7 +207,8 @@ export default function ResultsTable({ results }: Props) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 relative">
+      <ConfettiBurst active={showConfetti} />
       {/* Header row */}
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Results</h2>
@@ -246,7 +249,7 @@ export default function ResultsTable({ results }: Props) {
             {results.map((result, i) => {
               const pStyle = getProviderStyle(result.provider);
               return (
-                <AnimatePresence key={i}>
+                <React.Fragment key={i}>
                   <motion.tr
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -274,7 +277,7 @@ export default function ResultsTable({ results }: Props) {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <StatusIcon status={result.status} key={`${i}-${result.status}`} />
+                      <StatusIcon status={result.status} uid={`${i}-${result.status}`} />
                     </td>
                     <td className="px-4 py-3">{result.metadata?.modelCount || '—'}</td>
                     <td className="px-4 py-3">{result.latencyMs ? `${result.latencyMs}ms` : '—'}</td>
@@ -290,14 +293,8 @@ export default function ResultsTable({ results }: Props) {
                     </td>
                   </motion.tr>
                   {expanded.has(i) && (
-                    <motion.tr
-                      key={`${i}-detail`}
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <td colSpan={6} className="px-4 py-3 bg-gray-50 dark:bg-gray-800">
+                    <tr key={`${i}-detail`} className="bg-gray-50 dark:bg-gray-800">
+                      <td colSpan={6} className="px-4 py-3">
                         <div className="space-y-2 text-xs">
                           <div><strong>Full Key:</strong> <span className="font-mono break-all">{result.key}</span></div>
                           {result.status === 'untestable' && (
@@ -331,18 +328,17 @@ export default function ResultsTable({ results }: Props) {
                           )}
                         </div>
                       </td>
-                    </motion.tr>
+                    </tr>
                   )}
-                </AnimatePresence>
+                </React.Fragment>
               );
             })}
           </tbody>
         </table>
       </div>
 
-      {/* Animated summary bar + confetti */}
+      {/* Animated summary bar */}
       <div className="relative text-sm text-gray-600 dark:text-gray-400 text-center font-mono">
-        <ConfettiBurst active={showConfetti} />
         <motion.span
           key={results.length}
           initial={{ opacity: 0, y: 6 }}

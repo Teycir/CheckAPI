@@ -93,7 +93,7 @@ export default function HistoryPanel({ history, onRemove, onClear, onRestore }: 
           {/* Expanded results */}
           {expanded === entry.id && (
             <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-4 bg-gray-50/50 dark:bg-gray-800/20">
-              <ResultsTable results={entry.results} />
+              <ResultsTable results={entry.results} disableConfetti />
             </div>
           )}
         </div>

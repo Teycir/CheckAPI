@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/Footer";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -191,6 +192,9 @@ export default function RootLayout({
         />
       </head>
       <body className={`${jetbrainsMono.className} min-h-screen bg-dark-bg text-dark-text flex flex-col`}>
+        <div className="relative z-20 flex justify-end px-4 py-2">
+          <ThemeToggle />
+        </div>
         <main className="flex-1">
           {children}
         </main>

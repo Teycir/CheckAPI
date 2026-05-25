@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* ─── Tailwind v4: class-based dark mode ─── */
+@variant dark (&:where(.dark, .dark *));
+
 :root {
   --neon-blue: #00d4ff;
   --dark-bg: #0a0a0a;
@@ -109,15 +112,15 @@ body::before {
 
 /* ─── 1. Glitch flash (one-shot on mount) ─── */
 @keyframes glitch-once {
-  0%   { clip-path: inset(0 0 100% 0); transform: translateX(0); }
-  5%   { clip-path: inset(30% 0 50% 0); transform: translateX(-4px); filter: hue-rotate(90deg); }
-  10%  { clip-path: inset(10% 0 70% 0); transform: translateX(4px); }
-  15%  { clip-path: inset(60% 0 20% 0); transform: translateX(-2px); filter: hue-rotate(0deg); }
-  20%  { clip-path: inset(0 0 0 0);     transform: translateX(0); }
+  0%   { clip-path: inset(0 0 0 0);    transform: translateX(0); }
+  8%   { clip-path: inset(30% 0 50% 0); transform: translateX(-4px); filter: hue-rotate(90deg); }
+  16%  { clip-path: inset(10% 0 70% 0); transform: translateX(4px); }
+  24%  { clip-path: inset(60% 0 20% 0); transform: translateX(-2px); filter: hue-rotate(0deg); }
+  32%  { clip-path: inset(0 0 0 0);     transform: translateX(0); }
   100% { clip-path: inset(0 0 0 0);     transform: translateX(0); }
 }
 .glitch-once {
-  animation: glitch-once 0.6s steps(1) forwards;
+  animation: glitch-once 0.6s linear forwards;
 }
 
 /* ─── 2. Scanline sweep (loading button) ─── */
@@ -146,7 +149,7 @@ body::before {
   content: '';
   position: absolute;
   inset: -2px;
-  border-radius: inherit;
+  border-radius: calc(0.75rem + 2px); /* rounded-xl + the 2px outset */
   padding: 2px;
   background: linear-gradient(
     90deg,
@@ -184,7 +187,7 @@ body::before {
 /* ─── 5. Confetti particle ─── */
 @keyframes confetti-fall {
   0%   { transform: translateY(-10px) rotate(0deg) scale(1); opacity: 1; }
-  100% { transform: translateY(120px) rotate(720deg) scale(0.3); opacity: 0; }
+  100% { transform: translateY(400px) rotate(720deg) scale(0.3); opacity: 0; }
 }
 .confetti-particle {
   position: absolute;
