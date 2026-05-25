@@ -93,3 +93,21 @@ body::before {
     0 0 10px rgba(0, 212, 255, 0.5),
     0 0 20px rgba(0, 212, 255, 0.3);
 }
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    text-shadow:
+      0 0 5px rgba(0, 212, 255, 0.5),
+      0 0 10px rgba(0, 212, 255, 0.3);
+  }
+  50% {
+    text-shadow:
+      0 0 10px rgba(0, 212, 255, 0.8),
+      0 0 20px rgba(0, 212, 255, 0.5),
+      0 0 30px rgba(0, 212, 255, 0.3);
+  }
+}

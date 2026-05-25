@@ -13,7 +13,7 @@ export default function CheckButton({ onClick, disabled, loading }: Props) {
     <button
       onClick={onClick}
       disabled={disabled || loading}
-      className="w-full sm:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+      className="px-8 py-3 border-2 border-neon-blue bg-neon-blue/10 text-neon-blue font-bold font-mono uppercase tracking-wider transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 rounded-xl hover:bg-neon-blue/20 hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] active:scale-95"
     >
       {loading && <Loader2 className="w-4 h-4 animate-spin" />}
       {loading ? 'Checking...' : 'Check Keys →'}

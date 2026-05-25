@@ -4,9 +4,9 @@ import { useState } from 'react';
 import KeysTextarea from '@/components/KeysTextarea';
 import CheckButton from '@/components/CheckButton';
 import ResultsTable from '@/components/ResultsTable';
-import { TextScramble } from '@/components/TextScramble';
 import { AnimatedTagline } from '@/components/AnimatedTagline';
 import { BackgroundBeams } from '@/components/ui/background-beams';
+import DecryptedText from '@/components/DecryptedText';
 import { checkKeys, ValidationResult } from '@/lib';
 import { AlertCircle, Code } from 'lucide-react';
 
@@ -42,22 +42,28 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <BackgroundBeams className="absolute top-0 left-0 w-full h-full z-0" />
+    <div className="relative">
+      <BackgroundBeams className="fixed top-0 left-0 w-full h-full z-0" />
       
       <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
-        <header className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-neon-blue glow-text mb-2">
-              <TextScramble duration={1.2}>CheckAPI</TextScramble>
-            </h1>
-            <AnimatedTagline text="Validate your LLM API keys instantly" />
-          </div>
+        <header className="text-center mb-8 relative">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold glow-text pulse-glow mb-4">
+            <DecryptedText
+              text="CheckAPIs"
+              animateOn="view"
+              speed={75}
+              maxIterations={20}
+              className="text-neon-blue"
+              encryptedClassName="text-neon-blue/30"
+            />
+          </h1>
+          <AnimatedTagline text="Validate your LLM API keys instantly" />
+          
           <a
             href="https://github.com/teycir/checkapi"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-dark-bg/80 backdrop-blur-sm border-2 border-neon-blue/30 rounded-xl hover:border-neon-blue transition-all"
+            className="absolute top-0 right-0 flex items-center gap-2 px-4 py-2 bg-dark-bg/80 backdrop-blur-sm border-2 border-neon-blue/30 rounded-xl hover:border-neon-blue transition-all"
           >
             <Code className="w-5 h-5 text-neon-blue" />
             <span className="text-sm text-neon-blue/70 font-mono">Source</span>

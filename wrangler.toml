@@ -1,7 +1,3 @@
-name = "checkapi"
+name = "checkapis"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "out"
-account_id = "24fba2852c114d8969e9aa0d423f3746"
-
-[site]
-bucket = "./out"

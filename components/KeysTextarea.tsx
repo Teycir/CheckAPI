@@ -12,11 +12,11 @@ export default function KeysTextarea({ value, onChange, disabled }: Props) {
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <label className="text-sm text-gray-600 dark:text-gray-400">
-          Paste your API keys below — one per line
+        <label className="text-sm text-neon-blue/70 font-mono">
+          LLM API keys — one per line
         </label>
         {lineCount > 0 && (
-          <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
+          <span className="text-xs bg-neon-blue/10 text-neon-blue px-2 py-1 rounded border border-neon-blue/30">
             {lineCount} {lineCount === 1 ? 'key' : 'keys'}
           </span>
         )}
@@ -26,9 +26,9 @@ export default function KeysTextarea({ value, onChange, disabled }: Props) {
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
         placeholder="sk-ant-api03-...&#10;sk-proj-...&#10;AIzaSy..."
-        className="w-full h-40 p-4 border rounded-lg font-mono text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+        className="w-full h-32 p-4 bg-black/50 border-2 border-neon-blue/30 text-neon-blue font-mono text-sm resize-none focus:border-neon-blue focus:outline-none focus:shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-colors rounded-xl disabled:opacity-50"
       />
-      <p className="text-xs text-gray-500 dark:text-gray-400">
+      <p className="text-xs text-neon-blue/50 font-mono">
         🔒 All checks run in your browser. Keys are never sent to any server.
       </p>
     </div>

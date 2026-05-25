@@ -23,8 +23,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${jetbrainsMono.className} min-h-screen bg-dark-bg text-dark-text`}>
-        {children}
+      <body className={`${jetbrainsMono.className} min-h-screen bg-dark-bg text-dark-text flex flex-col`}>
+        <main className="flex-1">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
