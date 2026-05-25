@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import KeysTextarea from '@/components/KeysTextarea';
 import CheckButton from '@/components/CheckButton';
 import ResultsTable from '@/components/ResultsTable';
@@ -21,8 +21,21 @@ export default function Home() {
   const [duplicates, setDuplicates] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>('checker');
+  const [titleGlitch, setTitleGlitch] = useState(false);
+  const glitchFired = useRef(false);
 
   const { history, push, remove, clear } = useHistory();
+
+  /* one-shot glitch on mount */
+  useEffect(() => {
+    if (glitchFired.current) return;
+    glitchFired.current = true;
+    const t = setTimeout(() => {
+      setTitleGlitch(true);
+      setTimeout(() => setTitleGlitch(false), 650);
+    }, 400);
+    return () => clearTimeout(t);
+  }, []);
 
   const handleCheck = async () => {
     const keys = input.split('\n').map(k => k.trim()).filter(Boolean);
@@ -56,9 +69,9 @@ export default function Home() {
     <div className="relative">
       <BackgroundBeams className="fixed top-0 left-0 w-full h-full z-0" />
 
-      <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8 relative z-10">
+      <article className="max-w-6xl mx-auto px-4 py-6 sm:py-8 relative z-10">
         <header className="text-center mb-6 sm:mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold glow-text pulse-glow mb-3 sm:mb-4">
+          <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold glow-text pulse-glow mb-3 sm:mb-4 ${titleGlitch ? 'glitch-once' : ''}`}>
             <DecryptedText
               text="CheckAPIs"
               animateOn="view"
@@ -68,7 +81,13 @@ export default function Home() {
               encryptedClassName="text-neon-blue/30"
             />
           </h1>
-          <AnimatedTagline text="Validate your LLM API keys instantly" />
+          <p className="text-lg sm:text-xl text-gray-400">
+            <AnimatedTagline text="Validate your LLM API keys instantly" />
+          </p>
+          <p className="sr-only">
+            Privacy-first API key validation for OpenAI, Anthropic, Google Gemini, Groq, Perplexity, HuggingFace, and 12+ LLM providers. 
+            All validation happens client-side in your browser. Get detailed results with models, latency, and rate limits.
+          </p>
         </header>
 
         {/* Tabs */}
@@ -147,7 +166,7 @@ export default function Home() {
             onRestore={handleRestore}
           />
         )}
-      </div>
+      </article>
     </div>
   );
 }

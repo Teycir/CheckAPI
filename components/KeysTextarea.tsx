@@ -21,13 +21,18 @@ export default function KeysTextarea({ value, onChange, disabled }: Props) {
           </span>
         )}
       </div>
-      <textarea
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        disabled={disabled}
-        placeholder="sk-ant-api03-...&#10;sk-proj-...&#10;AIzaSy..."
-        className="w-full h-32 p-4 bg-black/50 border-2 border-neon-blue/30 text-neon-blue font-mono text-sm resize-none focus:border-neon-blue focus:outline-none focus:shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-colors rounded-xl disabled:opacity-50"
-      />
+
+      {/* border-shimmer wrapper gives the perimeter sweep on focus */}
+      <div className="border-shimmer rounded-xl">
+        <textarea
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          disabled={disabled}
+          placeholder="sk-ant-api03-...&#10;sk-proj-...&#10;AIzaSy..."
+          className="w-full h-32 p-4 bg-black/50 border-2 border-neon-blue/30 text-neon-blue font-mono text-sm resize-none focus:border-neon-blue focus:outline-none focus:shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-colors rounded-xl disabled:opacity-50"
+        />
+      </div>
+
       <p className="text-xs text-neon-blue/50 font-mono">
         🔒 All checks run in your browser. Keys are never sent to any server.
       </p>

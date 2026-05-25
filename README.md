@@ -151,6 +151,18 @@ See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for detailed instructions.
 - Keys are never logged or stored
 - Displayed keys are always truncated (first 8 characters only)
 
+## SEO & LLM Visibility
+
+CheckAPI is optimized for both traditional search engines and AI-powered search (ChatGPT, Claude, Perplexity):
+
+- **Structured Data**: JSON-LD schema with FAQPage, WebApplication, and Organization markup
+- **LLM Optimization**: llms.txt file for direct AI crawler access
+- **AI Crawler Permissions**: Explicit allowances for GPTBot, Claude-Web, PerplexityBot
+- **Open Graph**: Dynamic social sharing images
+- **Sitemap & Robots**: Optimized for crawl efficiency
+
+See [docs/SEO.md](./docs/SEO.md) for full documentation.
+
 ## Tech Stack
 
 - Next.js 16 (App Router)
