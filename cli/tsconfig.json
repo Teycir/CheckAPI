@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "../dist/cli",
+    "rootDir": "..",
+    "lib": ["ES2022"],
+    "types": ["node"],
+    "noEmit": false
+  },
+  "include": ["**/*.ts", "../lib/core/**/*.ts", "../lib/providers/**/*.ts", "../lib/utils/**/*.ts", "../lib/cli.ts"],
+  "exclude": ["../app", "../components", "../node_modules", "../.next", "../out"]
+}

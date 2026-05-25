@@ -2,9 +2,14 @@
   "name": "checkapi",
   "version": "0.1.0",
   "private": true,
+  "bin": {
+    "checkapis": "./dist/cli/cli/index.js"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:cli": "tsc -p cli/tsconfig.json && node scripts/postbuild-cli.cjs",
+    "cli": "node --experimental-vm-modules dist/cli/cli/index.js",
     "start": "next start",
     "lint": "eslint"
   },

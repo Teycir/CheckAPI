@@ -1,6 +1,7 @@
 node_modules
 .next
 out
+dist
 *.log
 .DS_Store
 .env*.local
@@ -10,3 +11,4 @@ wrangler.toml
 wrangler.toml
 wrangler.toml
 .wrangler
+tests/real-keys.txt

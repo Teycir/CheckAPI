@@ -2,6 +2,25 @@
 
 A single-page Next.js application that validates LLM API keys for multiple providers.
 
+<!-- donation:eth:start -->
+<div align="center">
+
+## Support Development
+
+If this project helps your work, support ongoing maintenance and new features.
+
+**ETH Donation Wallet**  
+`0x11282eE5726B3370c8B480e321b3B2aA13686582`
+
+<a href="https://etherscan.io/address/0x11282eE5726B3370c8B480e321b3B2aA13686582">
+  <img src="public/eth-donation.svg" alt="Ethereum donation QR code" width="220" />
+</a>
+
+_Scan the QR code or copy the wallet address above._
+
+</div>
+<!-- donation:eth:end -->
+
 ## Features
 
 - **Zero friction**: Paste keys → click button → get results
@@ -10,6 +29,7 @@ A single-page Next.js application that validates LLM API keys for multiple provi
 - **Detailed results**: View models, latency, rate limits, and error messages
 - **Dark mode**: Built-in theme toggle
 - **API Access**: Use via curl or any HTTP client
+- **CLI Tool**: Command-line interface for automation and scripting
 
 ## API Usage
 
@@ -46,6 +66,20 @@ curl -X POST https://checkapis.pages.dev/api/check \
 ```
 
 **Rate Limiting**: 20 requests per minute per IP. See [docs/API.md](./docs/API.md) for full documentation.
+
+## CLI Usage
+
+```bash
+# Install and build
+npm run build:cli
+
+# Validate keys
+node dist/cli/cli/index.js sk-proj-...
+node dist/cli/cli/index.js -f keys.txt
+cat keys.txt | node dist/cli/cli/index.js --json
+```
+
+See [docs/CLI.md](./docs/CLI.md) for full CLI documentation.
 
 ## Supported Providers
 
@@ -129,9 +163,13 @@ See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for detailed instructions.
 
 ```
 ├── app/              # Next.js app router pages
+├── cli/              # CLI tool
+│   ├── index.ts      # CLI entry point
+│   └── tsconfig.json # CLI TypeScript config
 ├── components/       # React components
 ├── docs/            # Documentation
 │   ├── API.md       # API documentation
+│   ├── CLI.md       # CLI documentation
 │   ├── DEPLOYMENT.md
 │   ├── RATE_LIMITING.md
 │   └── roadmap.md
@@ -139,6 +177,8 @@ See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for detailed instructions.
 │   └── api/
 │       └── check.js # API endpoint with rate limiting
 ├── lib/             # Utility functions
+│   ├── cli.ts       # Node-compatible exports
+│   └── index.ts     # Browser exports
 ├── public/          # Static assets
 ├── scripts/         # Deployment and utility scripts
 ├── tests/           # Test scripts
@@ -148,3 +188,47 @@ See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for detailed instructions.
 ## License
 
 MIT
+
+---
+
+## 🌐 Related Projects
+
+Explore more privacy-first and security tools:
+
+### Privacy & Encryption
+- **[Timeseal](https://github.com/Teycir/Timeseal)** - Time-locked encryption vault with Dead Man's Switch. AES-256 split-key crypto, ephemeral seals.
+- **[Sanctum](https://github.com/Teycir/Sanctum)** - Zero-trust encrypted vault with cryptographic plausible deniability. XChaCha20-Poly1305, Argon2id.
+- **[GhostChat](https://github.com/Teycir/GhostChat)** - True P2P encrypted chat via WebRTC. No servers, no storage, self-destructing messages.
+- **[xmrproof](https://github.com/Teycir/xmrproof)** - Monero payment verification, 100% client-side.
+
+### Security Tools
+- **[BurpAPISecuritySuite](https://github.com/Teycir/BurpAPISecuritySuite)** - Burp Suite extension for API security testing. 15 attack types, 108+ payloads, BOLA/IDOR detection.
+- **[Mcpwn](https://github.com/Teycir/Mcpwn)** - Automated security scanner for Model Context Protocol servers. Detects RCE, path traversal, prompt injection.
+- **[SeekYou](https://github.com/Teycir/SeekYou)** - OSINT tool for IP/domain/ASN reconnaissance.
+- **[DiffCatcher](https://github.com/Teycir/DiffCatcher)** - Git repo discovery, diff capture, code element extraction.
+
+### MCP Security Servers
+- **[burp-mcp-server](https://github.com/Teycir/burp-mcp-server)** - MCP server for Burp Suite Professional. Vulnerability scanning via AI assistants.
+- **[nuclei-mcp](https://github.com/Teycir/nuclei-mcp)** - MCP server for Nuclei. Multi-target scanning, severity filtering.
+- **[nmap-mcp](https://github.com/Teycir/nmap-mcp)** - MCP server for Nmap. Stealth recon, vuln/NSE scanning.
+- **[frida-mcp](https://github.com/Teycir/frida-mcp)** - MCP server for Frida. Dynamic instrumentation, SSL pinning bypass.
+
+---
+
+## 💼 Services Offered
+
+- 🔒 **Privacy-First Development** - P2P applications, encrypted communication, zero-knowledge systems
+- 🚀 **Web Application Development** - Full-stack development with Next.js, React, TypeScript
+- 🔧 **WebRTC Solutions** - Real-time communication, video/audio streaming, data channels
+- 🛡️ **Security Tool Development** - Burp extensions, penetration testing tools, automation frameworks
+- 🤖 **AI Integration** - LLM-powered applications, intelligent automation, custom AI solutions
+
+**Get in Touch**: [teycirbensoltane.tn](https://teycirbensoltane.tn) | Available for freelance projects and consulting
+
+---
+
+<div align="center">
+
+**Built with 💚 by [Teycir Ben Soltane](https://teycirbensoltane.tn)**
+
+</div>
