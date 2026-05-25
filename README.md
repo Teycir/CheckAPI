@@ -31,6 +31,21 @@ _Scan the QR code or copy the wallet address above._
 - **API Access**: Use via curl or any HTTP client
 - **CLI Tool**: Command-line interface for automation and scripting
 
+## Screenshots
+
+<div align="center">
+
+### Landing Page
+![CheckAPI Landing](Assets/landing.png)
+
+### Validation Results
+![Validation Results with Stats](Assets/results.png)
+
+### History Panel
+![History Panel](Assets/history.png)
+
+</div>
+
 ## API Usage
 
 CheckAPIs can be used programmatically via HTTP API:
