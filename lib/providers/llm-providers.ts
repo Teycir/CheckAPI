@@ -1,0 +1,140 @@
+import { ProviderConfig } from '../core/types';
+
+export const llmProviders: ProviderConfig[] = [
+  {
+    name: 'OpenAI',
+    pattern: /^sk-proj-[A-Za-z0-9_-]{32,}|^sk-[A-Za-z0-9]{32,}/,
+    confidence: 'definite',
+    endpoint: 'https://api.openai.com/v1/models',
+    buildHeaders: (key) => ({ 'Authorization': `Bearer ${key}` }),
+    parseResponse: (data) => ({
+      models: data?.data?.map((m: any) => m.id).filter(Boolean),
+      modelCount: data?.data?.length,
+      organization: data?.organization,
+    }),
+    testable: true,
+  },
+  {
+    name: 'Anthropic',
+    pattern: /^sk-ant-[A-Za-z0-9\-_]{32,}/,
+    confidence: 'definite',
+    endpoint: 'https://api.anthropic.com/v1/models',
+    buildHeaders: (key) => ({
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+    }),
+    parseResponse: (data) => ({
+      models: data?.data?.map((m: any) => m.id).filter(Boolean),
+      modelCount: data?.data?.length,
+    }),
+    testable: true,
+  },
+  {
+    name: 'Google Gemini',
+    pattern: /^AIza[A-Za-z0-9\-_]{35}/,
+    confidence: 'definite',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models',
+    buildUrl: (endpoint, key) => `${endpoint}?key=${key}`,
+    parseResponse: (data) => ({
+      models: data?.models?.map((m: any) => m.name).filter(Boolean),
+      modelCount: data?.models?.length,
+    }),
+    testable: true,
+  },
+  {
+    name: 'Groq',
+    pattern: /^gsk_[A-Za-z0-9]{52}/,
+    confidence: 'definite',
+    endpoint: 'https://api.groq.com/openai/v1/models',
+    buildHeaders: (key) => ({ 'Authorization': `Bearer ${key}` }),
+    parseResponse: (data) => ({
+      models: data?.data?.map((m: any) => m.id).filter(Boolean),
+      modelCount: data?.data?.length,
+    }),
+    testable: true,
+  },
+  {
+    name: 'Perplexity',
+    pattern: /^pplx-[A-Za-z0-9]{48}/,
+    confidence: 'definite',
+    endpoint: 'https://api.perplexity.ai/models',
+    buildHeaders: (key) => ({ 'Authorization': `Bearer ${key}` }),
+    parseResponse: (data) => ({
+      models: data?.data?.map((m: any) => m.id).filter(Boolean),
+      modelCount: data?.data?.length,
+    }),
+    testable: true,
+  },
+  {
+    name: 'HuggingFace',
+    pattern: /^hf_[A-Za-z0-9]{34,}/,
+    confidence: 'definite',
+    endpoint: 'https://huggingface.co/api/whoami',
+    buildHeaders: (key) => ({ 'Authorization': `Bearer ${key}` }),
+    parseResponse: (data) => ({
+      organization: data?.name,
+      username: data?.name,
+    }),
+    testable: true,
+  },
+  {
+    name: 'Replicate',
+    pattern: /^r8_[A-Za-z0-9]{37}/,
+    confidence: 'definite',
+    endpoint: 'https://api.replicate.com/v1/account',
+    buildHeaders: (key) => ({ 'Authorization': `Bearer ${key}` }),
+    parseResponse: (data) => ({
+      username: data?.username,
+      type: data?.type,
+    }),
+    testable: true,
+  },
+  {
+    name: 'Together AI',
+    pattern: /^[a-f0-9]{64}$/,
+    confidence: 'likely',
+    endpoint: 'https://api.together.xyz/v1/models',
+    buildHeaders: (key) => ({ 'Authorization': `Bearer ${key}` }),
+    parseResponse: (data) => ({
+      models: data?.data?.map((m: any) => m.id).filter(Boolean),
+      modelCount: data?.data?.length,
+    }),
+    testable: true,
+  },
+  {
+    name: 'Cohere',
+    pattern: /^[A-Za-z0-9]{40}$/,
+    confidence: 'likely',
+    endpoint: 'https://api.cohere.com/v1/models',
+    buildHeaders: (key) => ({ 'Authorization': `Bearer ${key}` }),
+    parseResponse: (data) => ({
+      models: data?.models?.map((m: any) => m.name).filter(Boolean),
+      modelCount: data?.models?.length,
+    }),
+    testable: true,
+  },
+  {
+    name: 'Mistral',
+    pattern: /^[A-Za-z0-9]{32}$/,
+    confidence: 'likely',
+    endpoint: 'https://api.mistral.ai/v1/models',
+    buildHeaders: (key) => ({ 'Authorization': `Bearer ${key}` }),
+    parseResponse: (data) => ({
+      models: data?.data?.map((m: any) => m.id).filter(Boolean),
+      modelCount: data?.data?.length,
+    }),
+    testable: true,
+  },
+  {
+    name: 'AWS Bedrock',
+    pattern: /^AKIA[A-Z0-9]{16}/,
+    confidence: 'definite',
+    testable: false,
+  },
+  {
+    name: 'Azure OpenAI',
+    pattern: /^[a-f0-9]{32}$/,
+    confidence: 'likely',
+    testable: false,
+  },
+];
