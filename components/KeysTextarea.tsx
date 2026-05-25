@@ -29,7 +29,7 @@ export default function KeysTextarea({ value, onChange, disabled }: Props) {
           onChange={(e) => onChange(e.target.value)}
           disabled={disabled}
           placeholder="sk-ant-api03-...&#10;sk-proj-...&#10;AIzaSy..."
-          className="w-full h-32 p-4 bg-black/50 border-2 border-neon-blue/30 text-neon-blue font-mono text-sm resize-none focus:border-neon-blue focus:outline-none focus:shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-colors rounded-xl disabled:opacity-50"
+          className="w-full h-32 p-4 bg-[var(--surface)] border-2 border-neon-blue/30 text-[var(--dark-text)] font-mono text-sm resize-none focus:border-neon-blue focus:outline-none focus:shadow-[0_0_15px_color-mix(in_srgb,var(--neon-blue)_30%,transparent)] transition-colors rounded-xl disabled:opacity-50 placeholder:text-[var(--dark-text)]/30"
         />
       </div>
 

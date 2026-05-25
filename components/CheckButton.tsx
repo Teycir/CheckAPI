@@ -20,7 +20,7 @@ export default function CheckButton({ onClick, disabled, loading }: Props) {
         'transition-all duration-300 rounded-xl',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         'flex items-center justify-center gap-2',
-        'hover:bg-neon-blue/20 hover:shadow-[0_0_20px_rgba(0,212,255,0.4)]',
+        'hover:bg-neon-blue/20 hover:shadow-[0_0_20px_color-mix(in_srgb,var(--neon-blue)_40%,transparent)]',
         'active:scale-95',
         loading ? 'scanline-sweep' : '',
       ].join(' ')}

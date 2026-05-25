@@ -9,7 +9,7 @@ import ResultsTable from './ResultsTable';
 interface Props {
   history: HistoryEntry[];
   onRemove: (id: string) => void;
-  onClear: () => void;
+  onClear:  () => void;
   onRestore: (results: ValidationResult[]) => void;
 }
 
@@ -26,7 +26,10 @@ export default function HistoryPanel({ history, onRemove, onClear, onRestore }: 
 
   if (history.length === 0) {
     return (
-      <div className="text-center py-10 text-gray-500 dark:text-gray-400 text-sm font-mono">
+      <div
+        className="text-center py-10 text-sm font-mono"
+        style={{ color: 'color-mix(in srgb, var(--dark-text) 45%, transparent)' }}
+      >
         No history yet — results will appear here after each check.
       </div>
     );
@@ -34,13 +37,20 @@ export default function HistoryPanel({ history, onRemove, onClear, onRestore }: 
 
   return (
     <div className="space-y-2">
+      {/* header row */}
       <div className="flex justify-between items-center mb-3">
-        <span className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+        <span
+          className="text-xs font-mono"
+          style={{ color: 'color-mix(in srgb, var(--dark-text) 50%, transparent)' }}
+        >
           {history.length} session{history.length !== 1 ? 's' : ''} stored
         </span>
         <button
           onClick={onClear}
-          className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-red-400 hover:text-red-300 border border-red-500/30 hover:border-red-400/50 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-red-500 dark:text-red-400
+                     hover:text-red-600 dark:hover:text-red-300
+                     border border-red-400/30 hover:border-red-400/60
+                     rounded-lg transition-colors"
         >
           <Trash2 className="w-3 h-3" />
           Clear all
@@ -48,15 +58,31 @@ export default function HistoryPanel({ history, onRemove, onClear, onRestore }: 
       </div>
 
       {history.map(entry => (
-        <div key={entry.id} className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+        <div
+          key={entry.id}
+          className="rounded-xl overflow-hidden"
+          style={{ border: '1px solid var(--border)' }}
+        >
           {/* Row header */}
           <div
-            className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+            className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors"
+            style={{ background: 'var(--surface)' }}
+            onMouseEnter={e =>
+              (e.currentTarget.style.background =
+                'color-mix(in srgb, var(--neon-blue) 4%, var(--surface))')
+            }
+            onMouseLeave={e => (e.currentTarget.style.background = 'var(--surface)')}
             onClick={() => setExpanded(expanded === entry.id ? null : entry.id)}
           >
-            <Clock className="w-4 h-4 text-gray-400 flex-shrink-0" />
+            <Clock
+              className="w-4 h-4 flex-shrink-0"
+              style={{ color: 'color-mix(in srgb, var(--dark-text) 40%, transparent)' }}
+            />
 
-            <span className="text-xs text-gray-500 dark:text-gray-400 font-mono flex-shrink-0">
+            <span
+              className="text-xs font-mono flex-shrink-0"
+              style={{ color: 'color-mix(in srgb, var(--dark-text) 55%, transparent)' }}
+            >
               {formatDate(entry.checkedAt)}
             </span>
 
@@ -64,7 +90,13 @@ export default function HistoryPanel({ history, onRemove, onClear, onRestore }: 
               <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 font-mono">
                 {entry.valid} valid
               </span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 font-mono">
+              <span
+                className="text-xs px-2 py-0.5 rounded-full font-mono"
+                style={{
+                  background: 'var(--surface-alt)',
+                  color: 'color-mix(in srgb, var(--dark-text) 70%, transparent)',
+                }}
+              >
                 {entry.total} total
               </span>
             </div>
@@ -78,21 +110,33 @@ export default function HistoryPanel({ history, onRemove, onClear, onRestore }: 
               </button>
               <button
                 onClick={e => { e.stopPropagation(); onRemove(entry.id); }}
-                className="text-gray-400 hover:text-red-400 transition-colors"
+                className="transition-colors"
+                style={{ color: 'color-mix(in srgb, var(--dark-text) 40%, transparent)' }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'rgb(248 113 113)')}
+                onMouseLeave={e =>
+                  ((e.currentTarget as HTMLElement).style.color =
+                    'color-mix(in srgb, var(--dark-text) 40%, transparent)')
+                }
                 aria-label="Delete entry"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
               {expanded === entry.id
-                ? <ChevronDown className="w-4 h-4 text-gray-400" />
-                : <ChevronRight className="w-4 h-4 text-gray-400" />
+                ? <ChevronDown className="w-4 h-4" style={{ color: 'color-mix(in srgb, var(--dark-text) 40%, transparent)' }} />
+                : <ChevronRight className="w-4 h-4" style={{ color: 'color-mix(in srgb, var(--dark-text) 40%, transparent)' }} />
               }
             </div>
           </div>
 
           {/* Expanded results */}
           {expanded === entry.id && (
-            <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-4 bg-gray-50/50 dark:bg-gray-800/20">
+            <div
+              className="px-4 py-4"
+              style={{
+                borderTop: '1px solid var(--border)',
+                background: 'color-mix(in srgb, var(--neon-blue) 2%, var(--surface))',
+              }}
+            >
               <ResultsTable results={entry.results} disableConfetti />
             </div>
           )}

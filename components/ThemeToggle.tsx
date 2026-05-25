@@ -12,14 +12,12 @@ function getInitialDark(): boolean {
 export default function ThemeToggle() {
   const [dark, setDark] = useState<boolean | null>(null);
 
-  // Read from localStorage only once on mount — no setState inside effect body
-  const isDark = dark ?? false;
+  const isDark  = dark ?? false;
   const mounted = dark !== null;
 
   useEffect(() => {
     const initial = getInitialDark();
     document.documentElement.classList.toggle('dark', initial);
-    // Use a microtask to defer the setState out of the synchronous effect body
     Promise.resolve().then(() => setDark(initial));
   }, []);
 
@@ -35,10 +33,15 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      className="p-2 rounded-lg transition-colors"
+      style={{ color: 'var(--dark-text)' }}
+      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = 'var(--surface-alt)')}
+      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = 'transparent')}
       aria-label="Toggle theme"
     >
-      {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+      {isDark
+        ? <Sun  className="w-5 h-5" />
+        : <Moon className="w-5 h-5" />}
     </button>
   );
 }

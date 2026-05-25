@@ -21,7 +21,7 @@ export const BackgroundBeams = ({ className }: { className?: string }) => {
   return (
     <div className={`absolute inset-0 w-full h-full overflow-hidden pointer-events-none ${className}`}>
       <svg
-        className="w-full h-full opacity-30"
+        className="w-full h-full opacity-30 background-beams-svg"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
         fill="none"
@@ -50,9 +50,9 @@ export const BackgroundBeams = ({ className }: { className?: string }) => {
         ))}
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#00d4ff" stopOpacity="0" />
-            <stop offset="50%" stopColor="#00d4ff" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#00d4ff" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--neon-blue)" stopOpacity="0" />
+            <stop offset="50%" stopColor="var(--neon-blue)" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="var(--neon-blue)" stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>
