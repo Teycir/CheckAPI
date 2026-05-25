@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { Footer } from "@/components/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
 });
 
 export const metadata: Metadata = {
   title: "CheckAPI - Validate LLM API Keys",
-  description: "Test and validate API keys for OpenAI, Anthropic, Google Gemini, and other LLM providers",
+  description: "Test and validate API keys for OpenAI, Anthropic, Google Gemini, and other LLM providers. Privacy-first, client-side validation.",
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -23,11 +22,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
-    >
-      <body>{children}</body>
+    <html lang="en">
+      <body className={`${jetbrainsMono.className} min-h-screen bg-dark-bg text-dark-text`}>
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
