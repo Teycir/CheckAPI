@@ -9,6 +9,43 @@ A single-page Next.js application that validates LLM API keys for multiple provi
 - **Privacy-first**: All checks run client-side in your browser
 - **Detailed results**: View models, latency, rate limits, and error messages
 - **Dark mode**: Built-in theme toggle
+- **API Access**: Use via curl or any HTTP client
+
+## API Usage
+
+CheckAPIs can be used programmatically via HTTP API:
+
+```bash
+# Check single key
+curl -X POST https://checkapis.pages.dev/api/check \
+  -H "Content-Type: application/json" \
+  -d '{"keys": ["sk-proj-..."]}'
+
+# Check multiple keys
+curl -X POST https://checkapis.pages.dev/api/check \
+  -H "Content-Type: application/json" \
+  -d '{"keys": ["sk-proj-...", "sk-ant-api03-...", "AIzaSy..."]}'
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "count": 1,
+  "results": [
+    {
+      "key": "sk-proj-...",
+      "provider": "openai",
+      "valid": true,
+      "models": ["gpt-4", "gpt-3.5-turbo"],
+      "latency": 245,
+      "rateLimit": "5000"
+    }
+  ]
+}
+```
+
+See [API.md](./API.md) for full documentation.
 
 ## Supported Providers
 

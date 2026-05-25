@@ -163,6 +163,63 @@ export default function HowToUsePage() {
           </ul>
         </div>
 
+        <div className="p-4 sm:p-6 md:p-8 space-y-4 bg-dark-bg/80 backdrop-blur-sm border-2 border-neon-blue/20 rounded-2xl">
+          <h2 className="text-xl sm:text-2xl font-bold text-neon-blue mb-4 flex items-center gap-2">
+            <Zap className="w-6 h-6" /> API Usage (curl)
+          </h2>
+          <p className="text-neon-blue/80 mb-2 text-sm sm:text-base">Programmatic Access</p>
+          <p className="text-neon-blue/60 text-sm leading-relaxed mb-3">
+            Use CheckAPIs from the command line or integrate into your applications:
+          </p>
+          
+          <div className="space-y-3">
+            <div>
+              <p className="text-neon-blue font-bold mb-2 text-sm">Endpoint:</p>
+              <div className="bg-dark-bg/50 border border-neon-blue/20 rounded-lg p-3 font-mono text-xs text-neon-blue/70">
+                POST https://checkapis.pages.dev/api/check
+              </div>
+            </div>
+
+            <div>
+              <p className="text-neon-blue font-bold mb-2 text-sm">Example Request:</p>
+              <div className="bg-dark-bg/50 border border-neon-blue/20 rounded-lg p-3 font-mono text-xs text-neon-blue/70 overflow-x-auto">
+                curl -X POST https://checkapis.pages.dev/api/check \<br/>
+                &nbsp;&nbsp;-H &quot;Content-Type: application/json&quot; \<br/>
+                &nbsp;&nbsp;-d &apos;{'{'}&#34;keys&#34;: [&#34;sk-proj-...&#34;, &#34;sk-ant-...&#34;]{'}'}&#39;
+              </div>
+            </div>
+
+            <div>
+              <p className="text-neon-blue font-bold mb-2 text-sm">Response:</p>
+              <div className="bg-dark-bg/50 border border-neon-blue/20 rounded-lg p-3 font-mono text-xs text-neon-blue/70 overflow-x-auto">
+                {'{'}<br/>
+                &nbsp;&nbsp;&#34;success&#34;: true,<br/>
+                &nbsp;&nbsp;&#34;count&#34;: 2,<br/>
+                &nbsp;&nbsp;&#34;results&#34;: [<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;{'{'}<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#34;key&#34;: &#34;sk-proj-...&#34;,<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#34;provider&#34;: &#34;openai&#34;,<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#34;valid&#34;: true,<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#34;models&#34;: [&#34;gpt-4&#34;, &#34;gpt-3.5-turbo&#34;],<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#34;latency&#34;: 245<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;{'}'}<br/>
+                &nbsp;&nbsp;]<br/>
+                {'}'}
+              </div>
+            </div>
+
+            <div>
+              <p className="text-neon-blue font-bold mb-2 text-sm">Limits:</p>
+              <ul className="text-neon-blue/60 text-xs space-y-1 list-disc list-inside ml-4">
+                <li>Maximum 50 keys per request</li>
+                <li>10 second timeout per key</li>
+                <li>CORS enabled for browser requests</li>
+                <li>No authentication required</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
         <div className="text-center pt-4">
           <a href="/" className="inline-block px-6 py-3 bg-dark-bg/80 backdrop-blur-sm border-2 border-neon-blue rounded-xl hover:border-neon-blue hover:shadow-[0_0_20px_rgba(0,212,255,0.3)] transition-all text-neon-blue font-mono">
             CHECK YOUR KEYS
