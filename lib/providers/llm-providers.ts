@@ -2,6 +2,30 @@ import { ProviderConfig } from '../core/types';
 
 export const llmProviders: ProviderConfig[] = [
   {
+    name: 'Cerebras',
+    pattern: /^csk-[a-z0-9]{48}/,
+    confidence: 'definite',
+    endpoint: 'https://api.cerebras.ai/v1/models',
+    buildHeaders: (key) => ({ 'Authorization': `Bearer ${key}` }),
+    parseResponse: (data) => ({
+      models: data?.data?.map((m: any) => m.id).filter(Boolean),
+      modelCount: data?.data?.length,
+    }),
+    testable: true,
+  },
+  {
+    name: 'OpenRouter',
+    pattern: /^sk-or-v1-[A-Za-z0-9]{64}/,
+    confidence: 'definite',
+    endpoint: 'https://openrouter.ai/api/v1/models',
+    buildHeaders: (key) => ({ 'Authorization': `Bearer ${key}` }),
+    parseResponse: (data) => ({
+      models: data?.data?.map((m: any) => m.id).filter(Boolean),
+      modelCount: data?.data?.length,
+    }),
+    testable: true,
+  },
+  {
     name: 'OpenAI',
     pattern: /^sk-proj-[A-Za-z0-9_-]{32,}|^sk-[A-Za-z0-9]{32,}/,
     confidence: 'definite',

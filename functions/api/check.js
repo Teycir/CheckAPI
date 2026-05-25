@@ -121,6 +121,7 @@ async function validateKey(key) {
 }
 
 function detectProvider(key) {
+  if (key.startsWith('csk-')) return { name: 'cerebras', endpoint: 'https://api.cerebras.ai/v1/models', method: 'GET' };
   if (key.startsWith('sk-or-')) return { name: 'openrouter', endpoint: 'https://openrouter.ai/api/v1/models', method: 'GET' };
   if (key.startsWith('sk-ant-')) return { name: 'anthropic', endpoint: 'https://api.anthropic.com/v1/messages', method: 'POST' };
   if (key.startsWith('sk-proj-') || key.startsWith('sk-')) return { name: 'openai', endpoint: 'https://api.openai.com/v1/models', method: 'GET' };

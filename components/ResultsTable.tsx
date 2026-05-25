@@ -72,7 +72,7 @@ export default function ResultsTable({ results }: Props) {
           <tbody className="divide-y dark:divide-gray-700">
             {results.map((result, i) => (
               <>
-                <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-800">
+                <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer" onClick={() => toggleExpand(i)}>
                   <td className="px-4 py-3 font-mono text-xs">{result.truncatedKey}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs ${
@@ -93,11 +93,21 @@ export default function ResultsTable({ results }: Props) {
                   <td className="px-4 py-3">
                     {(result.metadata || result.errorMessage) && (
                       <button
-                        onClick={() => toggleExpand(i)}
-                        className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-                        aria-label={expanded.has(i) ? 'Collapse details' : 'Expand details'}
+                        onClick={(e) => { e.stopPropagation(); toggleExpand(i); }}
+                        className="flex items-center gap-1 px-2 py-1 text-xs text-neon-blue hover:text-neon-blue/80 border border-neon-blue/30 rounded hover:border-neon-blue transition-colors"
+                        aria-label={expanded.has(i) ? 'Hide details' : 'Show details'}
                       >
-                        {expanded.has(i) ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                        {expanded.has(i) ? (
+                          <>
+                            <ChevronDown className="w-3 h-3" />
+                            Hide
+                          </>
+                        ) : (
+                          <>
+                            <ChevronRight className="w-3 h-3" />
+                            Details
+                          </>
+                        )}
                       </button>
                     )}
                   </td>
