@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Teycir/CheckAPI/master/Assets/banner.svg" alt="CheckAPIs" width="100%"/>
+  <img src="https://raw.githubusercontent.com/Teycir/CheckAPI/master/Assets/banner.gif" alt="CheckAPIs" width="100%"/>
 </p>
 
 <p align="center">
