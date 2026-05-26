@@ -1,5 +1,9 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Teycir/CheckAPI/master/Assets/banner.gif" alt="CheckAPIs" width="100%"/>
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=52&duration=3000&pause=1000&color=00D4FF&center=true&vCenter=true&width=700&height=120&lines=CheckAPIs" alt="CheckAPIs"/>
+</p>
+
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=14&duration=4000&pause=500&color=00D4FF&center=true&vCenter=true&width=700&height=30&lines=validate+your+LLM+API+keys+instantly;privacy-first+%C2%B7+client-side+%C2%B7+no+server+%C2%B7+no+logging" alt="tagline"/>
 </p>
 
 <p align="center">
