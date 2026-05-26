@@ -1,6 +1,12 @@
-# CheckAPI
+<p align="center">
+  <img src="Assets/banner.svg" alt="CheckAPIs" width="100%"/>
+</p>
 
-A single-page Next.js application that validates LLM API keys for multiple providers.
+<p align="center">
+  A privacy-first tool to validate LLM API keys instantly — client-side, no server, no logging.
+</p>
+
+---
 
 <!-- donation:eth:start -->
 <div align="center">
